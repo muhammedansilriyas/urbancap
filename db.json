@@ -1,9 +1,9 @@
 {
   "siteInfo": {
-    "name": "URBAN MONKEY®",
+    "name": "URBANCAP®",
     "description": "Premium Streetwear Caps & Headwear",
     "contact": {
-      "email": "support@urbanmonkey.com",
+      "email": "support@urbancap.com",
       "phone": "+91 98765 43210",
       "address": "Mumbai, Maharashtra, India"
     }
@@ -79,8 +79,8 @@
   "products": [
     {
       "id": 1,
-      "name": "Urban Monkey Classic Baseball Cap",
-      "slug": "urban-monkey-classic-baseball-cap",
+      "name": "URBANCAP Classic Baseball Cap",
+      "slug": "urban-cap-classic-baseball-cap",
       "description": "Premium cotton twill baseball cap with embroidered Urban Monkey logo. Curved brim for classic look.",
       "price": 1299,
       "originalPrice": 1699,
@@ -88,12 +88,12 @@
       "currency": "INR",
       "categoryId": 1,
       "category": "BASEBALL CAPS",
-      "brand": "URBAN MONKEY",
+      "brand": "URBANCAP",
       "images": [
-        "https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&h=800&fit=crop"
+        "https://www.urbanmonkey.com/cdn/shop/files/super-suede-005-umbc003ps-blk-723125.jpg?v=1737061969",
+        "https://www.urbanmonkey.com/cdn/shop/files/super-suede-005-umbc003ps-blk-723125_1.jpg?v=1737061969"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?w=400&h=400&fit=crop",
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/super-suede-005-umbc003ps-blk-723125.jpg?v=1737061969",
       "colors": ["Black", "Navy Blue", "Charcoal Gray", "Olive Green"],
       "sizes": ["S", "M", "L", "XL"],
       "material": "100% Cotton Twill",
@@ -110,17 +110,17 @@
       "name": "Snapback Pro Street Edition",
       "slug": "snapback-pro-street-edition",
       "description": "Flat brim snapback with bold streetwear design. Adjustable snap closure for perfect fit.",
-      "price": 1499,
+      "price": 1350,
       "originalPrice": 1799,
       "discount": 17,
       "currency": "INR",
       "categoryId": 2,
       "category": "SNAPBACK CAPS",
-      "brand": "SNAPBACK PRO",
+      "brand": "URBANCAP",
       "images": [
-        "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&h=800&fit=crop"
+        "https://www.urbanmonkey.com/cdn/shop/files/UM_Caps_0127_f072b596-06a4-4e38-ad26-14931dd1ce24.jpg?v=1767770293"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=400&fit=crop",
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/UM_Caps_0127_f072b596-06a4-4e38-ad26-14931dd1ce24.jpg?v=1767770293",
       "colors": ["Red", "Black", "White", "Royal Blue"],
       "sizes": ["One Size"],
       "material": "Polyester",
@@ -143,11 +143,11 @@
       "currency": "INR",
       "categoryId": 3,
       "category": "DAD CAPS",
-      "brand": "RETRO STYLE",
+      "brand": "URBANCAP",
       "images": [
-        "https://images.unsplash.com/photo-1589292294638-8a2d5a1d0e61?w=800&h=800&fit=crop"
+        "https://www.urbanmonkey.com/cdn/shop/files/Antardrishti_green_eveil_eye_baseball_cap_03.jpg?v=1763976817"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1589292294638-8a2d5a1d0e61?w=400&h=400&fit=crop",
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/Antardrishti_green_eveil_eye_baseball_cap_03.jpg?v=1763976817",
       "colors": ["Khaki", "Light Blue", "Gray", "Mustard"],
       "sizes": ["S", "M", "L"],
       "material": "Cotton Canvas",
@@ -170,11 +170,11 @@
       "currency": "INR",
       "categoryId": 4,
       "category": "TRUCKER CAPS",
-      "brand": "ROAD TRIP",
+      "brand": "URBANCAP",
       "images": [
-        "https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?w=800&h=800&fit=crop"
+        "https://www.urbanmonkey.com/cdn/shop/files/ekanek_green_trucker_baseball_cap_03.jpg?v=1763976733"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?w=400&h=400&fit=crop",
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/ekanek_green_trucker_baseball_cap_03.jpg?v=1763976733",
       "colors": ["Black/White", "Navy/Red", "Camouflage"],
       "sizes": ["One Size"],
       "material": "Polyester Mesh + Foam",
@@ -197,11 +197,11 @@
       "currency": "INR",
       "categoryId": 5,
       "category": "BEANIES",
-      "brand": "WINTER COLLECTION",
+      "brand": "URBANCAP",
       "images": [
-        "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=800&h=800&fit=crop"
+        "https://www.urbanmonkey.com/cdn/shop/files/urbanmonkey29thnov-9488-337601.jpg?v=1733829723"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=400&h=400&fit=crop",
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/urbanmonkey29thnov-9488-337601.jpg?v=1733829723",
       "colors": ["Black", "Gray", "Navy", "Burgundy"],
       "sizes": ["One Size"],
       "material": "100% Merino Wool",
@@ -224,11 +224,11 @@
       "currency": "INR",
       "categoryId": 6,
       "category": "BUCKET HATS",
-      "brand": "SUMMER ESSENTIALS",
+      "brand": "URBANCAP",
       "images": [
-        "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&h=800&fit=crop"
+        "https://www.urbanmonkey.com/cdn/shop/files/um-training-bucket-hat-never-stop-playin-um24bh186-blk55-857243.jpg?v=1737807644"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&h=400&fit=crop",
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/um-training-bucket-hat-never-stop-playin-um24bh186-blk55-857243.jpg?v=1737807644",
       "colors": ["Beige", "White", "Black", "Olive"],
       "sizes": ["One Size"],
       "material": "Nylon",
@@ -251,11 +251,11 @@
       "currency": "INR",
       "categoryId": 7,
       "category": "5 PANEL CAPS",
-      "brand": "MINIMAL",
+      "brand": "URBANCAP",
       "images": [
-        "https://images.unsplash.com/photo-1534215754734-18e55d13e346?w=800&h=800&fit=crop"
+        "https://www.urbanmonkey.com/cdn/shop/files/Foldable_Outdoor_Cap_Pocket_Olive_02.jpg?v=1762846231"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1534215754734-18e55d13e346?w=400&h=400&fit=crop",
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/Foldable_Outdoor_Cap_Pocket_Olive_02.jpg?v=1762846231",
       "colors": ["Black", "Gray", "Navy"],
       "sizes": ["S", "M", "L"],
       "material": "Cotton Poplin",
@@ -278,11 +278,11 @@
       "currency": "INR",
       "categoryId": 8,
       "category": "VISORS",
-      "brand": "SPORTS GEAR",
+      "brand": "URBANCAP",
       "images": [
-        "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=800&h=800&fit=crop"
+        "https://www.urbanmonkey.com/cdn/shop/files/practice-session-umba142-wh-375732.jpg?v=1734935637"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=400&h=400&fit=crop",
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/practice-session-umba142-wh-375732.jpg?v=1734935637",
       "colors": ["White", "Black", "Navy"],
       "sizes": ["Adjustable"],
       "material": "Polyester",
@@ -305,11 +305,11 @@
       "currency": "INR",
       "categoryId": 1,
       "category": "BASEBALL CAPS",
-      "brand": "TACTICAL",
+      "brand": "URBANCAP",
       "images": [
-        "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=800&h=800&fit=crop"
+        "https://www.urbanmonkey.com/cdn/shop/files/earthbound_vintage_brown_baseball_dad_cap_01.jpg?v=1765779808"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=400&h=400&fit=crop",
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/earthbound_vintage_brown_baseball_dad_cap_01.jpg?v=1765779808",
       "colors": ["Camouflage", "Black Camo", "Urban Camo"],
       "sizes": ["M", "L", "XL"],
       "material": "Ripstop Nylon",
@@ -332,11 +332,11 @@
       "currency": "INR",
       "categoryId": 1,
       "category": "BASEBALL CAPS",
-      "brand": "PREMIUM LEATHER",
+      "brand": "URBANCAP",
       "images": [
-        "https://images.unsplash.com/photo-1535488106396-3719b4f5c0b5?w=800&h=800&fit=crop"
+        "https://www.urbanmonkey.com/cdn/shop/files/ivy-c-839970.jpg?v=1740828154"
       ],
-      "thumbnail": "https://images.unsplash.com/photo-1535488106396-3719b4f5c0b5?w=400&h=400&fit=crop",
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/ivy-c-839970.jpg?v=1740828154",
       "colors": ["Brown Leather", "Black Leather", "Tan Leather"],
       "sizes": ["S", "M", "L"],
       "material": "Cotton + Genuine Leather",
@@ -347,6 +347,411 @@
       "isNew": true,
       "tags": ["leather", "premium", "luxury"],
       "features": ["Genuine leather", "Handcrafted", "Premium finish"]
+    },
+    {
+      "id": 11,
+      "name": "Pro Skate Snapback",
+      "slug": "pro-skate-snapback",
+      "description": "Skate-inspired snapback with bold graphics. Perfect for street style enthusiasts.",
+      "price": 1499,
+      "originalPrice": 1899,
+      "discount": 21,
+      "currency": "INR",
+      "categoryId": 2,
+      "category": "SNAPBACK CAPS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/um-logo-embroidered-6-panel-snapback-umbc013-wht18-996290.jpg?v=1741694992"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/dope-suede-right-690634.jpg?v=1733829723",
+      "colors": ["White", "Black", "Red"],
+      "sizes": ["One Size"],
+      "material": "Cotton Twill",
+      "stock": 42,
+      "rating": 4.5,
+      "reviewCount": 67,
+      "isFeatured": true,
+      "isNew": true,
+      "tags": ["skate", "graphic", "street"],
+      "features": ["Embroidery", "Snap closure", "High crown"]
+    },
+    {
+      "id": 12,
+      "name": "Corduroy Dad Hat",
+      "slug": "corduroy-dad-hat",
+      "description": "Soft corduroy dad hat with vintage appeal. Comfortable unstructured design.",
+      "price": 1199,
+      "originalPrice": 1499,
+      "discount": 20,
+      "currency": "INR",
+      "categoryId": 3,
+      "category": "DAD CAPS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/corduroy-blue-baseball-cap-645264.jpg?v=1758782737"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/MetalMonkey_Orange_Baseball_cap_01.jpg?v=1763976482",
+      "colors": ["Navy", "Brown", "Green"],
+      "sizes": ["S", "M", "L"],
+      "material": "Cotton Corduroy",
+      "stock": 31,
+      "rating": 4.7,
+      "reviewCount": 89,
+      "isFeatured": false,
+      "isNew": true,
+      "tags": ["corduroy", "vintage", "soft"],
+      "features": ["Corduroy fabric", "Unstructured", "Adjustable strap"]
+    },
+    {
+      "id": 13,
+      "name": "Wool Blend Beanie",
+      "slug": "wool-blend-beanie",
+      "description": "Warm wool blend beanie with foldable cuff. Perfect for winter adventures.",
+      "price": 749,
+      "originalPrice": 999,
+      "discount": 25,
+      "currency": "INR",
+      "categoryId": 5,
+      "category": "BEANIES",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/um-winter-woolen-beanie-deep-mustard-862730.jpg?v=1741609815"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/reflective-fisherman-beanie-gray-24fb161312-gy-969105.jpg?v=1736481812",
+      "colors": ["Mustard", "Gray", "Navy", "Maroon"],
+      "sizes": ["One Size"],
+      "material": "Wool Blend",
+      "stock": 58,
+      "rating": 4.6,
+      "reviewCount": 112,
+      "isFeatured": true,
+      "isNew": false,
+      "tags": ["winter", "wool", "cuffed"],
+      "features": ["Wool blend", "Foldable cuff", "Soft texture"]
+    },
+    {
+      "id": 14,
+      "name": "Denim Trucker Hat",
+      "slug": "denim-trucker-hat",
+      "description": "Classic denim trucker hat with mesh back. Vintage wash for authentic look.",
+      "price": 1399,
+      "originalPrice": 1799,
+      "discount": 22,
+      "currency": "INR",
+      "categoryId": 4,
+      "category": "TRUCKER CAPS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/vintage-wash-denim-trucker-cap-multi-631299.jpg?v=1764133634"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/metal-head-trucker-24st206-grf-158862.jpg?v=1745689901",
+      "colors": ["Light Denim", "Dark Denim", "Black Denim"],
+      "sizes": ["One Size"],
+      "material": "Denim + Mesh",
+      "stock": 22,
+      "rating": 4.8,
+      "reviewCount": 45,
+      "isFeatured": true,
+      "isNew": false,
+      "tags": ["denim", "vintage", "trucker"],
+      "features": ["Denim front", "Mesh back", "Snap closure"]
+    },
+    {
+      "id": 15,
+      "name": "Canvas Bucket Hat",
+      "slug": "canvas-bucket-hat",
+      "description": "Durable canvas bucket hat with wide brim. Perfect for outdoor activities.",
+      "price": 999,
+      "originalPrice": 1299,
+      "discount": 23,
+      "currency": "INR",
+      "categoryId": 6,
+      "category": "BUCKET HATS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/um-canvas-bucket-hat-khaki-014-337409.jpg?v=1734103072"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/bucket-hat-chill-um24bh190-owh55-396492.jpg?v=1737807035",
+      "colors": ["Khaki", "Olive", "Black"],
+      "sizes": ["One Size"],
+      "material": "Canvas",
+      "stock": 36,
+      "rating": 4.4,
+      "reviewCount": 78,
+      "isFeatured": false,
+      "isNew": true,
+      "tags": ["canvas", "outdoor", "wide-brim"],
+      "features": ["Canvas material", "Wide brim", "Foldable"]
+    },
+    {
+      "id": 16,
+      "name": "Tech 5-Panel Cap",
+      "slug": "tech-5-panel-cap",
+      "description": "Technical fabric 5-panel cap with moisture-wicking properties.",
+      "price": 1699,
+      "originalPrice": 2199,
+      "discount": 23,
+      "currency": "INR",
+      "categoryId": 7,
+      "category": "5 PANEL CAPS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/tech-5-panel-cap-black-415691.jpg?v=1740233444"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/flipped-kids-cap-right-611885.jpg?v=1733829904",
+      "colors": ["Black", "Gray", "Navy"],
+      "sizes": ["S", "M", "L"],
+      "material": "Technical Polyester",
+      "stock": 18,
+      "rating": 4.9,
+      "reviewCount": 32,
+      "isFeatured": true,
+      "isNew": true,
+      "tags": ["technical", "moisture-wicking", "performance"],
+      "features": ["Moisture wicking", "Quick dry", "Lightweight"]
+    },
+    {
+      "id": 17,
+      "name": "Golf Visor",
+      "slug": "golf-visor",
+      "description": "Premium golf visor with sweatband and UV protection.",
+      "price": 899,
+      "originalPrice": 1199,
+      "discount": 25,
+      "currency": "INR",
+      "categoryId": 8,
+      "category": "VISORS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/golf-visor-white-527812.jpg?v=1741094169"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/um-training-005-um22dc-005-397057.jpg?v=1734936133",
+      "colors": ["White", "Navy", "Black"],
+      "sizes": ["Adjustable"],
+      "material": "Polyester",
+      "stock": 27,
+      "rating": 4.5,
+      "reviewCount": 41,
+      "isFeatured": false,
+      "isNew": false,
+      "tags": ["golf", "sports", "uv-protection"],
+      "features": ["Sweatband", "UV protection", "Adjustable"]
+    },
+    {
+      "id": 18,
+      "name": "Varsity Baseball Cap",
+      "slug": "varsity-baseball-cap",
+      "description": "Varsity-style baseball cap with leather strap and button.",
+      "price": 1599,
+      "originalPrice": 1999,
+      "discount": 20,
+      "currency": "INR",
+      "categoryId": 1,
+      "category": "BASEBALL CAPS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/varsity-baseball-cap-navy-715692.jpg?v=1741352964"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/Idgaf_blue_denim_baseball_cap_01.jpg?v=1762927667",
+      "colors": ["Navy", "Maroon", "Forest Green"],
+      "sizes": ["S", "M", "L"],
+      "material": "Wool Blend",
+      "stock": 24,
+      "rating": 4.7,
+      "reviewCount": 56,
+      "isFeatured": true,
+      "isNew": false,
+      "tags": ["varsity", "college", "premium"],
+      "features": ["Leather strap", "Metal button", "Wool blend"]
+    },
+    {
+      "id": 19,
+      "name": "Patchwork Snapback",
+      "slug": "patchwork-snapback",
+      "description": "Unique patchwork design snapback with multiple fabric panels.",
+      "price": 1799,
+      "originalPrice": 2299,
+      "discount": 22,
+      "currency": "INR",
+      "categoryId": 2,
+      "category": "SNAPBACK CAPS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/patchwork-snapback-multi-892146.jpg?v=1741985612"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/UM_27_Aug0270.jpg?v=1759370783",
+      "colors": ["Multi-color"],
+      "sizes": ["One Size"],
+      "material": "Mixed Fabrics",
+      "stock": 12,
+      "rating": 4.8,
+      "reviewCount": 23,
+      "isFeatured": true,
+      "isNew": true,
+      "tags": ["patchwork", "unique", "limited"],
+      "features": ["Patchwork design", "Unique pattern", "Snap closure"]
+    },
+    {
+      "id": 20,
+      "name": "Herringbone Dad Cap",
+      "slug": "herringbone-dad-cap",
+      "description": "Herringbone pattern dad cap with textured fabric and low profile.",
+      "price": 1299,
+      "originalPrice": 1699,
+      "discount": 24,
+      "currency": "INR",
+      "categoryId": 3,
+      "category": "DAD CAPS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/herringbone-dad-cap-gray-634871.jpg?v=1741673981"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/dreamer-002-25dck224-sblu-9998841.jpg?v=1752198930",
+      "colors": ["Gray", "Brown", "Navy"],
+      "sizes": ["S", "M", "L"],
+      "material": "Cotton Herringbone",
+      "stock": 29,
+      "rating": 4.6,
+      "reviewCount": 67,
+      "isFeatured": false,
+      "isNew": true,
+      "tags": ["herringbone", "textured", "pattern"],
+      "features": ["Herringbone pattern", "Textured fabric", "Low profile"]
+    },
+    {
+      "id": 21,
+      "name": "Cashmere Beanie",
+      "slug": "cashmere-beanie",
+      "description": "Luxury cashmere beanie for ultimate warmth and softness.",
+      "price": 2499,
+      "originalPrice": 3299,
+      "discount": 24,
+      "currency": "INR",
+      "categoryId": 5,
+      "category": "BEANIES",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/cashmere-beanie-navy-918263.jpg?v=1741812352"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/URBANMONKEY17_11_232166-804522.jpg?v=1733829604",
+      "colors": ["Navy", "Charcoal", "Camel"],
+      "sizes": ["One Size"],
+      "material": "100% Cashmere",
+      "stock": 15,
+      "rating": 4.9,
+      "reviewCount": 42,
+      "isFeatured": true,
+      "isNew": true,
+      "tags": ["cashmere", "luxury", "premium"],
+      "features": ["100% Cashmere", "Ultra soft", "Lightweight warmth"]
+    },
+    {
+      "id": 22,
+      "name": "Fleece Lined Beanie",
+      "slug": "fleece-lined-beanie",
+      "description": "Extra warm beanie with fleece lining for extreme cold weather.",
+      "price": 1099,
+      "originalPrice": 1499,
+      "discount": 27,
+      "currency": "INR",
+      "categoryId": 5,
+      "category": "BEANIES",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/fleece-lined-beanie-black-725914.jpg?v=1741923846"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/recycled-fisherman-beanie-neon-green-24fbr010-egrn-397857.jpg?v=1736481812",
+      "colors": ["Black", "Gray", "Navy"],
+      "sizes": ["One Size"],
+      "material": "Acrylic + Fleece",
+      "stock": 38,
+      "rating": 4.7,
+      "reviewCount": 89,
+      "isFeatured": false,
+      "isNew": false,
+      "tags": ["fleece", "warm", "winter"],
+      "features": ["Fleece lining", "Extra warm", "Soft interior"]
+    },
+    {
+      "id": 23,
+      "name": "Straw Bucket Hat",
+      "slug": "straw-bucket-hat",
+      "description": "Natural straw bucket hat for beach and summer outings.",
+      "price": 1299,
+      "originalPrice": 1699,
+      "discount": 24,
+      "currency": "INR",
+      "categoryId": 6,
+      "category": "BUCKET HATS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/straw-bucket-hat-natural-836472.jpg?v=1742051192"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/bucket-hat-fluffy-sherpa-um24bh191-owh55-176452.jpg?v=1737807034",
+      "colors": ["Natural", "Black", "Tan"],
+      "sizes": ["One Size"],
+      "material": "Straw",
+      "stock": 21,
+      "rating": 4.5,
+      "reviewCount": 34,
+      "isFeatured": true,
+      "isNew": true,
+      "tags": ["straw", "beach", "summer"],
+      "features": ["Natural straw", "Breathable", "Wide brim"]
+    },
+    {
+      "id": 24,
+      "name": "Running Visor",
+      "slug": "running-visor",
+      "description": "Lightweight running visor with sweat-wicking band and breathable fabric.",
+      "price": 849,
+      "originalPrice": 1199,
+      "discount": 29,
+      "currency": "INR",
+      "categoryId": 8,
+      "category": "VISORS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/running-visor-black-647892.jpg?v=1742113564"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/power-play-umba146-nor-992073.jpg?v=1734935637",
+      "colors": ["Black", "Gray", "Blue"],
+      "sizes": ["Adjustable"],
+      "material": "Technical Mesh",
+      "stock": 45,
+      "rating": 4.6,
+      "reviewCount": 78,
+      "isFeatured": false,
+      "isNew": false,
+      "tags": ["running", "fitness", "lightweight"],
+      "features": ["Sweat-wicking", "Breathable", "Lightweight"]
+    },
+    {
+      "id": 25,
+      "name": "Retro Trucker Cap",
+      "slug": "retro-trucker-cap",
+      "description": "Retro-inspired trucker cap with vintage graphics and mesh back.",
+      "price": 1199,
+      "originalPrice": 1599,
+      "discount": 25,
+      "currency": "INR",
+      "categoryId": 4,
+      "category": "TRUCKER CAPS",
+      "brand": "URBANCAP",
+      "images": [
+        "https://www.urbanmonkey.com/cdn/shop/files/retro-trucker-cap-vintage-729184.jpg?v=1742194836"
+      ],
+      "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/evolve-24lst213-blk-808114.jpg?v=1740070544",
+      "colors": ["Vintage", "Retro Blue", "Classic"],
+      "sizes": ["One Size"],
+      "material": "Foam + Mesh",
+      "stock": 33,
+      "rating": 4.7,
+      "reviewCount": 51,
+      "isFeatured": true,
+      "isNew": false,
+      "tags": ["retro", "vintage", "graphic"],
+      "features": ["Vintage graphics", "Mesh back", "Foam front"]
     }
   ],
   
@@ -385,19 +790,31 @@
       "id": 1,
       "name": "BEST SELLERS",
       "description": "Our most popular caps",
-      "productIds": [1, 3, 5, 7]
+      "productIds": [1, 3, 5, 7, 11, 18]
     },
     {
       "id": 2,
       "name": "NEW ARRIVALS",
       "description": "Fresh styles just added",
-      "productIds": [2, 4, 6, 8]
+      "productIds": [2, 4, 6, 8, 15, 19, 23]
     },
     {
       "id": 3,
       "name": "PREMIUM COLLECTION",
       "description": "Luxury and premium caps",
-      "productIds": [10, 7, 1]
+      "productIds": [10, 16, 21, 18, 14]
+    },
+    {
+      "id": 4,
+      "name": "WINTER ESSENTIALS",
+      "description": "Stay warm this winter",
+      "productIds": [5, 13, 21, 22]
+    },
+    {
+      "id": 5,
+      "name": "SUMMER STYLES",
+      "description": "Perfect for sunny days",
+      "productIds": [6, 8, 15, 17, 23, 24]
     }
   ],
   
@@ -420,7 +837,7 @@
           "color": "Khaki"
         }
       ],
-      "wishlist": [2, 5, 7]
+      "wishlist": [2, 5, 7, 16, 21]
     }
   ]
 }

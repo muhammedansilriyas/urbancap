@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation,  } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ShoppingBag, User, Heart, Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-  // const navigate = useNavigate();
 
   useEffect(() => {
     // Update cart count from localStorage
@@ -30,9 +30,17 @@ const Navbar = () => {
     window.addEventListener('cartUpdated', updateCartCount);
     window.addEventListener('wishlistUpdated', updateWishlistCount);
 
+    // Handle scroll effect
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
     return () => {
       window.removeEventListener('cartUpdated', updateCartCount);
       window.removeEventListener('wishlistUpdated', updateWishlistCount);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -45,7 +53,10 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-white border-b border-gray-200">
+      {/* Fixed Navbar Container */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-lg' : 'bg-white border-b border-gray-200'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -159,6 +170,9 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
+
+      {/* Spacer to prevent content from being hidden under fixed navbar */}
+      <div className="h-20"></div>
 
       {/* Mobile Menu Overlay */}
       <div className={`fixed inset-0 z-50 lg:hidden transition-all duration-300 ${

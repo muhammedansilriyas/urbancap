@@ -69,20 +69,20 @@ function App() {
                     <Signup></Signup>
                   }/>
                   <Route path="/wishlist" element={
-                    <ProtectedRoute>
+                   
                       <WishlistPage />
-                    </ProtectedRoute>
+                   
                   } />
                   <Route path="/cart" element={<CartPage />} />
                   <Route path="/checkout" element={
-                    <ProtectedRoute>
+                    
                       <CheckoutPage />
-                    </ProtectedRoute>
+                  
                   } />
                   <Route path="/order-confirmation" element={
-                    <ProtectedRoute>
+                    
                       <OrderConfirmationPage />
-                    </ProtectedRoute>
+                  
                   } />
                   
                   {/* 404 Page */}

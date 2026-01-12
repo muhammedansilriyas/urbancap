@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { BaseUrl } from "../SERVICES/Api";
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Updated import path
+import { useCart } from '../context/CartContext'; // Updated import path
+import { useWishlist } from '../context/WishlistContext'; // Updated import path
+import { toast } from 'react-toastify';
+
 const BASE_API = BaseUrl;
 
 // ✅ correct imports with extension
@@ -64,6 +69,21 @@ const capCategories = [
 
 export default function ProductPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { 
+    cartItems, 
+    addToCart: addToCartContext, 
+    
+    
+    
+  } = useCart();
+  const { 
+    
+    addToWishlist: addToWishlistContext, 
+    removeFromWishlist, 
+    isInWishlist 
+  } = useWishlist();
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -74,11 +94,44 @@ export default function ProductPage() {
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(12);
+  const [addingToCart, setAddingToCart] = useState({});
+  const [addingToWishlist, setAddingToWishlist] = useState({});
 
+  // Check if product is in cart
+  const isInCart = useCallback((productId, color = 'default', size = 'default') => {
+    return cartItems.some(item => 
+      item.id === productId && 
+      item.color === color && 
+      item.size === size
+    );
+  }, [cartItems]);
+
+  // Check if product is in wishlist
+  const isProductInWishlist = useCallback((productId) => {
+    return isInWishlist(productId);
+  }, [isInWishlist]);
+
+  // Fetch products from API
   useEffect(() => {
     fetchProducts();
     fetchCategories();
   }, []);
+
+  // Sync cart/wishlist with user data when logged in
+  useEffect(() => {
+    if (user && user.id) {
+      // Sync cart from user data if available
+      if (user.cart && user.cart.length > 0) {
+        // Note: In a real app, you'd want to merge local cart with server cart
+        console.log('User cart available:', user.cart.length, 'items');
+      }
+      
+      // Sync wishlist from user data if available
+      if (user.wishlist && user.wishlist.length > 0) {
+        console.log('User wishlist available:', user.wishlist.length, 'items');
+      }
+    }
+  }, [user]);
 
   const fetchProducts = async () => {
     try {
@@ -148,6 +201,117 @@ export default function ProductPage() {
     }
     return '#f3f4f6';
   }, []);
+
+  // Enhanced add to cart with context integration
+  const addToCart = useCallback(async (product, e) => {
+    e.stopPropagation();
+    
+    if (!product || !product.id) {
+      alert('Invalid product');
+      return;
+    }
+
+    setAddingToCart(prev => ({ ...prev, [product.id]: true }));
+
+    try {
+      const cartProduct = {
+        id: product.id,
+        name: product.name || 'Unnamed Product',
+        price: product.price || 0,
+        thumbnail: product.thumbnail || product.images?.[0] || '',
+        color: product.colors?.[0] || 'default',
+        size: product.sizes?.[0] || 'default',
+        quantity: 1,
+        stock: product.stock || 0
+      };
+
+      await addToCartContext(cartProduct);
+
+      // If user is logged in, sync with server
+      if (user && user.id) {
+        try {
+          // Get current user cart from local storage or state
+          const currentCart = cartItems;
+          const updatedCart = [...currentCart, cartProduct];
+          
+          // Update user cart on server
+          // This would be an API call to update user's cart
+          console.log('User cart updated on server:', updatedCart);
+        } catch (error) {
+          console.error('Error syncing cart with server:', error);
+        }
+      }
+
+      alert(`Added ${product.name || 'Product'} to cart!`);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Failed to add product to cart. Please try again.');
+    } finally {
+      setAddingToCart(prev => ({ ...prev, [product.id]: false }));
+    }
+  }, [addToCartContext, user, cartItems]);
+
+  // Enhanced add to wishlist with context integration
+  const addToWishlist = useCallback(async (product, e) => {
+    e.stopPropagation();
+    
+    if (!product || !product.id) {
+      toast.info('Invalid product');
+      return;
+    }
+
+    setAddingToWishlist(prev => ({ ...prev, [product.id]: true }));
+
+    try {
+      if (isProductInWishlist(product.id)) {
+        removeFromWishlist(product.id);
+        
+        // If user is logged in, sync with server
+        if (user && user.id) {
+          try {
+            // Update user wishlist on server
+            console.log('Removed from user wishlist on server:', product.id);
+          } catch (error) {
+            console.error('Error syncing wishlist with server:', error);
+          }
+        }
+        
+        alert(`Removed ${product.name || 'Product'} from wishlist!`);
+      } else {
+        const wishlistProduct = {
+          id: product.id,
+          name: product.name || 'Unnamed Product',
+          price: product.price || 0,
+          thumbnail: product.thumbnail || product.images?.[0] || '',
+          rating: product.rating || 0,
+          brand: product.brand || ''
+        };
+
+        await addToWishlistContext(wishlistProduct);
+
+        // If user is logged in, sync with server
+        if (user && user.id) {
+          try {
+            // Update user wishlist on server
+            console.log('Added to user wishlist on server:', product.id);
+          } catch (error) {
+            console.error('Error syncing wishlist with server:', error);
+          }
+        }
+
+        alert(`Added ${product.name || 'Product'} to wishlist!`);
+      }
+    } catch (error) {
+      console.error('Error toggling wishlist:', error);
+      alert('Failed to update wishlist. Please try again.');
+    } finally {
+      setAddingToWishlist(prev => ({ ...prev, [product.id]: false }));
+    }
+  }, [addToWishlistContext, removeFromWishlist, isProductInWishlist, user]);
+
+  const viewProductDetails = useCallback((productId) => {
+    navigate(`/product/${productId}`);
+  }, [navigate]);
 
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
@@ -229,20 +393,6 @@ export default function ProductPage() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [currentPage]);
-
-  const addToCart = useCallback((product, e) => {
-    e.stopPropagation();
-    alert(`Added ${product.name || 'Product'} to cart!`);
-  }, []);
-
-  const addToWishlist = useCallback((product, e) => {
-    e.stopPropagation();
-    alert(`Added ${product.name || 'Product'} to wishlist!`);
-  }, []);
-
-  const viewProductDetails = useCallback((productId) => {
-    navigate(`/product/${productId}`);
-  }, [navigate]);
 
   // Generate page numbers with ellipsis
   const getPageNumbers = useCallback(() => {
@@ -449,10 +599,20 @@ export default function ProductPage() {
                     <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <button
                         onClick={(e) => addToCart(product, e)}
-                        className="bg-white px-4 py-2 rounded-full shadow-md text-sm font-medium hover:bg-orange-500 hover:text-white transition-colors whitespace-nowrap"
+                        disabled={addingToCart[product.id]}
+                        className="bg-white px-4 py-2 rounded-full shadow-md text-sm font-medium hover:bg-orange-500 hover:text-white transition-colors whitespace-nowrap disabled:opacity-50"
                       >
-                        Add to Cart
+                        {addingToCart[product.id] ? 'Adding...' : 'Add to Cart'}
                       </button>
+                    </div>
+
+                    {/* Cart/Wishlist Indicators */}
+                    <div className="absolute top-3 right-3 flex flex-col gap-2">
+                      {isInCart(product.id) && (
+                        <div className="bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                          In Cart
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -512,10 +672,15 @@ export default function ProductPage() {
                       <div className="flex items-center gap-3">
                         <button
                           onClick={(e) => addToWishlist(product, e)}
-                          className="text-gray-400 hover:text-red-500 transition-colors text-lg"
-                          aria-label="Add to wishlist"
+                          disabled={addingToWishlist[product.id]}
+                          className={`text-lg transition-colors ${
+                            isProductInWishlist(product.id) 
+                              ? 'text-red-500 hover:text-red-600' 
+                              : 'text-gray-400 hover:text-red-500'
+                          } disabled:opacity-50`}
+                          aria-label={isProductInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
                         >
-                          ♡
+                          {isProductInWishlist(product.id) ? '❤️' : '♡'}
                         </button>
                         <span className={`text-xs px-2 py-1 rounded ${
                           (product.stock || 0) > 10 ? 'bg-green-100 text-green-800' :

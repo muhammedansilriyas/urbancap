@@ -103,7 +103,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+      <div className="relative bg-linear-to-r from-gray-900 to-gray-800 text-white">
         <div className="max-w-7xl mx-auto px-4 py-24 md:py-32">
           <div className="md:w-2/3">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
@@ -127,10 +127,10 @@ export default function HomePage() {
         <h2 className="text-3xl font-bold text-center mb-12">Shop By Category</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {[
-            { name: "Baseball Caps", image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500", link: "/products?category=1" },
-            { name: "Snapback Caps", image: "https://images.unsplash.com/photo-1533050487297-09b450131914?w-500", link: "/products?category=2" },
-            { name: "Dad Caps", image: "https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?w=500", link: "/products?category=3" },
-            { name: "Beanies", image: "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=500", link: "/products?category=5" },
+            { name: "Baseball Caps", image: "https://www.urbanmonkey.com/cdn/shop/files/earthbound_vintage_brown_baseball_dad_cap_03.jpg?v=1765780831", link: "/products?category=1" },
+            { name: "Snapback Caps", image: "https://www.urbanmonkey.com/cdn/shop/files/UM_Caps_0127_f072b596-06a4-4e38-ad26-14931dd1ce24.jpg?v=1767770293", link: "/products?category=2" },
+            { name: "Dad Caps", image: "https://www.urbanmonkey.com/cdn/shop/files/Antardrishti_green_eveil_eye_baseball_cap_03.jpg?v=1763976817", link: "/products?category=3" },
+            { name: "Beanies", image: "https://www.urbanmonkey.com/cdn/shop/files/urbanmonkey29thnov-9488-337601.jpg?v=1733829723", link: "/products?category=5" },
           ].map((category, index) => (
             <Link
               key={index}
@@ -229,7 +229,7 @@ export default function HomePage() {
       </div>
 
       {/* Banner Section */}
-      <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-16">
+      <div className="bg-linear-to-r from-orange-500 to-orange-600 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6">Summer Collection 2024</h2>
           <p className="text-xl mb-8 opacity-90">
@@ -266,7 +266,7 @@ export default function HomePage() {
                   to={`/product/${product.id}`}
                   className="flex gap-4 group hover:bg-gray-50 p-3 rounded-lg transition-colors"
                 >
-                  <div className="w-24 h-24 flex-shrink-0 overflow-hidden rounded-lg">
+                  <div className="w-24 h-24 shrink-0 overflow-hidden rounded-lg">
                     <img
                       src={product.thumbnail || product.images?.[0] || 'https://via.placeholder.com/100x100?text=No+Image'}
                       alt={product.name}
@@ -316,7 +316,7 @@ export default function HomePage() {
                   to={`/product/${product.id}`}
                   className="flex gap-4 group hover:bg-gray-50 p-3 rounded-lg transition-colors"
                 >
-                  <div className="w-24 h-24 flex-shrink-0 overflow-hidden rounded-lg">
+                  <div className="w-24 h-24 shrink-0 overflow-hidden rounded-lg">
                     <img
                       src={product.thumbnail || product.images?.[0] || 'https://via.placeholder.com/100x100?text=No+Image'}
                       alt={product.name}

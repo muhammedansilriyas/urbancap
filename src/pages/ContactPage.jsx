@@ -116,7 +116,7 @@ export default function ContactPage() {
       <ToastContainer position="top-right" autoClose={3000} />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+      <div className="bg-linear-to-r from-gray-900 to-gray-800 text-white">
         <div className="max-w-7xl mx-auto px-4 py-20 md:py-28">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Get in Touch</h1>
@@ -138,7 +138,7 @@ export default function ContactPage() {
               <div className="space-y-8">
                 {contactInfo.map((info, index) => (
                   <div key={index} className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                    <div className="shrink-0 w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
                       <span className="text-2xl">{info.icon}</span>
                     </div>
                     <div>
@@ -356,7 +356,7 @@ export default function ContactPage() {
       <div className="bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-gray-400">
-            © 2024 CapStore. All rights reserved. | Crafted with ❤️ for cap enthusiasts worldwide
+            © 2026 urbancap. All rights reserved. | Crafted with ❤️ for cap enthusiasts worldwide
           </p>
         </div>
       </div>

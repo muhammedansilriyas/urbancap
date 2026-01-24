@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { AuthProvider } from './context/AuthContext';
+import { AdminProvider } from './Admin/Context/AdminContext';
 
 // Components
 import Navbar from './components/Navbar';
@@ -23,78 +24,79 @@ import SearchPage from './pages/SearchPage';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import NotFoundPage from './pages/NotFoundPage';
-import Login from './Auth/Login';
 
+// Auth
+import Login from './Auth/Login';
 import Signup from './Auth/Signup';
-// Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  // You can implement authentication check here
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-  
-  if (!isAuthenticated) {
-    window.location.href = '/account';
-    return null;
-  }
-  
-  return children;
-};
+
+// Admin
+import AdminAddProducts from './Admin/AdminAddProdect';
+import AdminHome from './Admin/AdminHome';
+import AdminDashboard from './Admin/Dashboard';
+import AdminOrders from './Admin/Orders';
+import AdminProducts from './Admin/Prodects';
+import AdminUsers from './Admin/Users';
 
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
         <WishlistProvider>
-          <Router>
-            <div className="min-h-screen flex flex-col bg-gray-50">
-              <Navbar />
-              <main className="grow pt-16">
-                <Routes>
-                  {/* Public Routes */}
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/products" element={<ProductsPage />} />
-                  <Route path="/product/:productId" element={<ProductDetailsPage />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  <Route path="/contact" element={<ContactPage />} />
-                  <Route path="/search" element={<SearchPage />} />
-                  
-                  {/* Protected Routes */}
-                  <Route path="/account" element={
-                    <AccountPage />
-
-                  } />
-                  <Route path='/login' element={
-                    <Login/>
-                  }/>
-                  <Route path='/signup' element={
-                    <Signup></Signup>
-                  }/>
-                  <Route path="/wishlist" element={
-                   
-                      <WishlistPage />
-                   
-                  } />
-                  <Route path="/cart" element={<CartPage />} />
-                  <Route path="/checkout" element={
-                    
-                      <CheckoutPage />
-                  
-                  } />
-                  <Route path="/order-confirmation" element={
-                    
-                      <OrderConfirmationPage />
-                  
-                  } />
-                  
-                  {/* 404 Page */}
-                  <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-              </main>
-              <Footer />
+          <AdminProvider>
+            <Router>
+              <Routes>
+                {/* All non-admin routes with Navbar/Footer */}
+                <Route path="/*" element={
+                  <div className="min-h-screen flex flex-col bg-gray-50">
+                    <Navbar />
+                    <main className="grow pt-16">
+                      <Routes>
+                        {/* Public Routes */}
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/products" element={<ProductsPage />} />
+                        <Route path="/product/:productId" element={<ProductDetailsPage />} />
+                        <Route path="/about" element={<AboutPage />} />
+                        <Route path="/contact" element={<ContactPage />} />
+                        <Route path="/search" element={<SearchPage />} />
+                        
+                        {/* Auth Routes */}
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                        
+                        {/* User Routes */}
+                        <Route path="/account" element={<AccountPage />} />
+                        <Route path="/wishlist" element={<WishlistPage />} />
+                        <Route path="/cart" element={<CartPage />} />
+                        <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+                        
+                        {/* 404 Page */}
+                        <Route path="*" element={<NotFoundPage />} />
+                      </Routes>
+                    </main>
+                    <Footer />
+                  </div>
+                } />
+                
+                {/* Admin routes without Navbar/Footer */}
+                <Route path="/admin/*" element={
+                  <div className="min-h-screen bg-gray-950">
+                    <Routes>
+                      <Route path="" element={<AdminHome />} />
+                      <Route path="dashboard" element={<AdminDashboard />} />
+                      <Route path="products" element={<AdminProducts />} />
+                      <Route path="add-product" element={<AdminAddProducts />} />
+                      <Route path="orders" element={<AdminOrders />} />
+                      <Route path="users" element={<AdminUsers />} />
+                    </Routes>
+                  </div>
+                } />
+              </Routes>
               
               {/* Toast/Notification Container */}
               <div id="toast-container" className="fixed bottom-4 right-4 z-50"></div>
-            </div>
-          </Router>
+            </Router>
+          </AdminProvider>
         </WishlistProvider>
       </CartProvider>
     </AuthProvider>

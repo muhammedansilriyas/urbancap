@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { BaseUrl } from "../SERVICES/Api";
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Updated import path
-import { useCart } from '../context/CartContext'; // Updated import path
-import { useWishlist } from '../context/WishlistContext'; // Updated import path
+import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { toast } from 'react-toastify';
 
 const BASE_API = BaseUrl;
@@ -73,12 +73,8 @@ export default function ProductPage() {
   const { 
     cartItems, 
     addToCart: addToCartContext, 
-    
-    
-    
   } = useCart();
   const { 
-    
     addToWishlist: addToWishlistContext, 
     removeFromWishlist, 
     isInWishlist 
@@ -96,6 +92,12 @@ export default function ProductPage() {
   const [productsPerPage, setProductsPerPage] = useState(12);
   const [addingToCart, setAddingToCart] = useState({});
   const [addingToWishlist, setAddingToWishlist] = useState({});
+
+  // Check authentication status from localStorage
+  const isAuthenticated = useMemo(() => {
+    const savedUser = localStorage.getItem('gameHubUser');
+    return savedUser ? true : false;
+  }, []);
 
   // Check if product is in cart
   const isInCart = useCallback((productId, color = 'default', size = 'default') => {
@@ -116,22 +118,6 @@ export default function ProductPage() {
     fetchProducts();
     fetchCategories();
   }, []);
-
-  // Sync cart/wishlist with user data when logged in
-  useEffect(() => {
-    if (user && user.id) {
-      // Sync cart from user data if available
-      if (user.cart && user.cart.length > 0) {
-        // Note: In a real app, you'd want to merge local cart with server cart
-        console.log('User cart available:', user.cart.length, 'items');
-      }
-      
-      // Sync wishlist from user data if available
-      if (user.wishlist && user.wishlist.length > 0) {
-        console.log('User wishlist available:', user.wishlist.length, 'items');
-      }
-    }
-  }, [user]);
 
   const fetchProducts = async () => {
     try {
@@ -202,12 +188,21 @@ export default function ProductPage() {
     return '#f3f4f6';
   }, []);
 
-  // Enhanced add to cart with context integration
+  // Enhanced add to cart with login check
   const addToCart = useCallback(async (product, e) => {
     e.stopPropagation();
     
     if (!product || !product.id) {
       alert('Invalid product');
+      return;
+    }
+
+    // Check if user is logged in
+    if (!isAuthenticated) {
+      const shouldLogin = window.confirm('You need to login to add items to cart. Do you want to login now?');
+      if (shouldLogin) {
+        navigate('/login', { state: { from: '/products' } });
+      }
       return;
     }
 
@@ -234,29 +229,53 @@ export default function ProductPage() {
           const currentCart = cartItems;
           const updatedCart = [...currentCart, cartProduct];
           
-          // Update user cart on server
-          // This would be an API call to update user's cart
-          console.log('User cart updated on server:', updatedCart);
+          // Update user cart on server using AuthContext's updateUserPartial
+          // You can implement this if needed
+          console.log('User cart updated:', updatedCart);
         } catch (error) {
           console.error('Error syncing cart with server:', error);
         }
       }
 
-      alert(`Added ${product.name || 'Product'} to cart!`);
+      // Use toast instead of alert
+      toast.success(`Added ${product.name || 'Product'} to cart!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } catch (error) {
       console.error('Error adding to cart:', error);
-      alert('Failed to add product to cart. Please try again.');
+      toast.error('Failed to add product to cart. Please try again.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } finally {
       setAddingToCart(prev => ({ ...prev, [product.id]: false }));
     }
-  }, [addToCartContext, user, cartItems]);
+  }, [addToCartContext, user, cartItems, isAuthenticated, navigate]);
 
-  // Enhanced add to wishlist with context integration
+  // Enhanced add to wishlist with login check
   const addToWishlist = useCallback(async (product, e) => {
     e.stopPropagation();
     
     if (!product || !product.id) {
       toast.info('Invalid product');
+      return;
+    }
+
+    // Check if user is logged in for wishlist
+    if (!isAuthenticated) {
+      const shouldLogin = window.confirm('You need to login to manage wishlist. Do you want to login now?');
+      if (shouldLogin) {
+        navigate('/login', { state: { from: '/products' } });
+      }
       return;
     }
 
@@ -269,14 +288,21 @@ export default function ProductPage() {
         // If user is logged in, sync with server
         if (user && user.id) {
           try {
-            // Update user wishlist on server
-            console.log('Removed from user wishlist on server:', product.id);
+            // Update user wishlist on server using AuthContext's updateUserPartial
+            console.log('Removed from user wishlist:', product.id);
           } catch (error) {
             console.error('Error syncing wishlist with server:', error);
           }
         }
         
-        alert(`Removed ${product.name || 'Product'} from wishlist!`);
+        toast.success(`Removed ${product.name || 'Product'} from wishlist!`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       } else {
         const wishlistProduct = {
           id: product.id,
@@ -293,24 +319,42 @@ export default function ProductPage() {
         if (user && user.id) {
           try {
             // Update user wishlist on server
-            console.log('Added to user wishlist on server:', product.id);
+            console.log('Added to user wishlist:', product.id);
           } catch (error) {
             console.error('Error syncing wishlist with server:', error);
           }
         }
 
-        alert(`Added ${product.name || 'Product'} to wishlist!`);
+        toast.success(`Added ${product.name || 'Product'} to wishlist!`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     } catch (error) {
       console.error('Error toggling wishlist:', error);
-      alert('Failed to update wishlist. Please try again.');
+      toast.error('Failed to update wishlist. Please try again.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } finally {
       setAddingToWishlist(prev => ({ ...prev, [product.id]: false }));
     }
-  }, [addToWishlistContext, removeFromWishlist, isProductInWishlist, user]);
+  }, [addToWishlistContext, removeFromWishlist, isProductInWishlist, user, isAuthenticated, navigate]);
 
   const viewProductDetails = useCallback((productId) => {
     navigate(`/product/${productId}`);
+  }, [navigate]);
+
+  const handleLoginRedirect = useCallback(() => {
+    navigate('/login', { state: { from: '/products' } });
   }, [navigate]);
 
   const filteredProducts = useMemo(() => {
@@ -456,7 +500,7 @@ export default function ProductPage() {
         <div className="flex overflow-x-auto justify-start lg:justify-center items-center gap-6 lg:gap-10 py-4 px-4 border-b border-gray-300 scrollbar-hide">
           {/* All Products Button */}
           <div 
-            className={`flex flex-col items-center cursor-pointer group flex-shrink-0 ${
+            className={`flex flex-col items-center cursor-pointer group shrink-0 ${
               selectedCategory === 'all' ? 'text-orange-500' : ''
             }`}
             onClick={() => setSelectedCategory('all')}
@@ -473,7 +517,7 @@ export default function ProductPage() {
           {capCategories.map((cap, index) => (
             <div 
               key={index} 
-              className={`flex flex-col items-center cursor-pointer group flex-shrink-0 ${
+              className={`flex flex-col items-center cursor-pointer group shrink-0 ${
                 selectedCategory === cap.id.toString() ? 'text-orange-500' : ''
               }`}
               onClick={() => setSelectedCategory(cap.id.toString())}
@@ -496,6 +540,24 @@ export default function ProductPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Login Reminder Banner */}
+        {!isAuthenticated && (
+          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+            <div className="flex items-center">
+              <span className="text-blue-500 mr-3">🔒</span>
+              <p className="text-blue-800 text-sm">
+                <span className="font-medium">Login required</span> to add items to cart and wishlist
+              </p>
+            </div>
+            <button
+              onClick={handleLoginRedirect}
+              className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors"
+            >
+              Login Now
+            </button>
+          </div>
+        )}
+
         {/* Page Title and Sort */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
@@ -534,7 +596,7 @@ export default function ProductPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm min-w-[180px]"
+                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm min-w-45"
               >
                 <option value="featured">Featured</option>
                 <option value="newest">Newest</option>
@@ -599,16 +661,26 @@ export default function ProductPage() {
                     <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <button
                         onClick={(e) => addToCart(product, e)}
-                        disabled={addingToCart[product.id]}
-                        className="bg-white px-4 py-2 rounded-full shadow-md text-sm font-medium hover:bg-orange-500 hover:text-white transition-colors whitespace-nowrap disabled:opacity-50"
+                        disabled={addingToCart[product.id] || !isAuthenticated}
+                        className={`px-4 py-2 rounded-full shadow-md text-sm font-medium whitespace-nowrap transition-colors ${
+                          !isAuthenticated 
+                            ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
+                            : 'bg-white hover:bg-orange-500 hover:text-white'
+                        } disabled:opacity-50`}
+                        title={!isAuthenticated ? "Login to add to cart" : ""}
                       >
-                        {addingToCart[product.id] ? 'Adding...' : 'Add to Cart'}
+                        {!isAuthenticated 
+                          ? 'Login to Add' 
+                          : addingToCart[product.id] 
+                            ? 'Adding...' 
+                            : 'Add to Cart'
+                        }
                       </button>
                     </div>
 
                     {/* Cart/Wishlist Indicators */}
                     <div className="absolute top-3 right-3 flex flex-col gap-2">
-                      {isInCart(product.id) && (
+                      {isAuthenticated && isInCart(product.id) && (
                         <div className="bg-green-500 text-white text-xs px-2 py-1 rounded-full">
                           In Cart
                         </div>
@@ -672,15 +744,18 @@ export default function ProductPage() {
                       <div className="flex items-center gap-3">
                         <button
                           onClick={(e) => addToWishlist(product, e)}
-                          disabled={addingToWishlist[product.id]}
+                          disabled={addingToWishlist[product.id] || !isAuthenticated}
                           className={`text-lg transition-colors ${
-                            isProductInWishlist(product.id) 
-                              ? 'text-red-500 hover:text-red-600' 
-                              : 'text-gray-400 hover:text-red-500'
+                            !isAuthenticated 
+                              ? 'text-gray-300 cursor-not-allowed' 
+                              : isProductInWishlist(product.id)
+                                ? 'text-red-500 hover:text-red-600' 
+                                : 'text-gray-400 hover:text-red-500'
                           } disabled:opacity-50`}
-                          aria-label={isProductInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+                          aria-label={!isAuthenticated ? "Login to manage wishlist" : isProductInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+                          title={!isAuthenticated ? "Login to manage wishlist" : ""}
                         >
-                          {isProductInWishlist(product.id) ? '❤️' : '♡'}
+                          {!isAuthenticated ? '🔒' : isProductInWishlist(product.id) ? '❤️' : '♡'}
                         </button>
                         <span className={`text-xs px-2 py-1 rounded ${
                           (product.stock || 0) > 10 ? 'bg-green-100 text-green-800' :

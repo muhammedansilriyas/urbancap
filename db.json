@@ -886,7 +886,6 @@
         "https://www.urbanmonkey.com/cdn/shop/files/UM_27_Aug0270.jpg?v=1759370783",
         "https://www.urbanmonkey.com/cdn/shop/files/UM_27_Aug0267.jpg?v=1759370783",
         "https://www.urbanmonkey.com/cdn/shop/files/UM_27_Aug0358.jpg?v=1759370783"
-        
       ],
       "thumbnail": "https://www.urbanmonkey.com/cdn/shop/files/UM_27_Aug0270.jpg?v=1759370783",
       "colors": [
@@ -1299,13 +1298,28 @@
       "email": "muhammedansilriyas@gmail.com",
       "phone": "+917560968582",
       "password": "7560968582",
-      "role": "user",
+      "role": "admin",
       "status": "active",
       "wishlist": [],
       "cart": [],
       "purchaseHistory": [],
       "addresses": [],
       "createdAt": "2026-01-12T14:05:20.350Z"
+    },
+    {
+      "id": "6aa4",
+      "firstName": "ashif",
+      "lastName": "ashi",
+      "email": "ansil@gmail.com",
+      "phone": "7510887392",
+      "password": "7510887392",
+      "role": "admin",
+      "status": "active",
+      "wishlist": [],
+      "cart": [],
+      "purchaseHistory": [],
+      "addresses": [],
+      "createdAt": "2026-01-20T14:59:13.821Z"
     }
   ]
 }

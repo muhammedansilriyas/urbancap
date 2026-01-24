@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, User, Heart, Menu, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ShoppingBag, User, Heart, Menu, X, LogOut, LogIn } from 'lucide-react';
+import { useAuth } from '../context/AuthContext'; // Import the auth context
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -8,6 +9,11 @@ const Navbar = () => {
   const [wishlistCount, setWishlistCount] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Get authentication state from context
+  const { user, logout } = useAuth();
+  const isAuthenticated = !!user;
 
   useEffect(() => {
     // Update cart count from localStorage
@@ -43,6 +49,15 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
+    navigate('/');
+    // Dispatch events to update cart/wishlist counts
+    window.dispatchEvent(new Event('cartUpdated'));
+    window.dispatchEvent(new Event('wishlistUpdated'));
+  };
 
   const navItems = [
     { name: 'Home', path: '/' },
@@ -90,69 +105,107 @@ const Navbar = () => {
               {/* Desktop Actions */}
               <div className="hidden lg:flex items-center space-x-6">
                 <Link
-                  to="/account"
+                  to={isAuthenticated ? "/account" : "/login"}
                   className="text-gray-600 hover:text-black transition-colors relative group"
                 >
                   <User className="w-6 h-6" />
                   <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    Account
+                    {isAuthenticated ? "Account" : "Login"}
                   </span>
                 </Link>
                 
-                <Link
-                  to="/wishlist"
-                  className="text-gray-600 hover:text-black transition-colors relative group"
-                >
-                  <div className="relative">
+                {/* Show wishlist only if authenticated */}
+                {isAuthenticated && (
+                  <Link
+                    to="/wishlist"
+                    className="text-gray-600 hover:text-black transition-colors relative group"
+                  >
+                    <div className="relative">
+                      <Heart className="w-6 h-6" />
+                      {wishlistCount > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                          {wishlistCount}
+                        </span>
+                      )}
+                    </div>
+                    <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                      Wishlist
+                    </span>
+                  </Link>
+                )}
+                
+                {/* Show cart only if authenticated */}
+                {isAuthenticated && (
+                  <Link
+                    to="/cart"
+                    className="text-gray-600 hover:text-black transition-colors relative group"
+                  >
+                    <div className="relative">
+                      <ShoppingBag className="w-6 h-6" />
+                      {cartCount > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                          {cartCount}
+                        </span>
+                      )}
+                    </div>
+                    <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                      Cart
+                    </span>
+                  </Link>
+                )}
+
+                {/* Logout Button (Desktop) - Only show when authenticated */}
+                {isAuthenticated && (
+                  <button
+                    onClick={handleLogout}
+                    className="text-gray-600 hover:text-black transition-colors relative group"
+                  >
+                    <LogOut className="w-6 h-6" />
+                    <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                      Logout
+                    </span>
+                  </button>
+                )}
+
+                {/* Login Button (Desktop) - Only show when NOT authenticated */}
+                {!isAuthenticated && (
+                  <Link
+                    to="/login"
+                    className="text-gray-600 hover:text-black transition-colors relative group"
+                  >
+                    <LogIn className="w-6 h-6" />
+                    <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                      Login
+                    </span>
+                  </Link>
+                )}
+              </div>
+
+              {/* Mobile Actions */}
+              <div className="lg:hidden flex items-center space-x-4">
+                {/* Show wishlist only if authenticated */}
+                {isAuthenticated && (
+                  <Link to="/wishlist" className="text-gray-600 hover:text-black relative">
                     <Heart className="w-6 h-6" />
                     {wishlistCount > 0 && (
                       <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
                         {wishlistCount}
                       </span>
                     )}
-                  </div>
-                  <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    Wishlist
-                  </span>
-                </Link>
+                  </Link>
+                )}
                 
-                <Link
-                  to="/cart"
-                  className="text-gray-600 hover:text-black transition-colors relative group"
-                >
-                  <div className="relative">
+                {/* Show cart only if authenticated */}
+                {isAuthenticated && (
+                  <Link to="/cart" className="text-gray-600 hover:text-black relative">
                     <ShoppingBag className="w-6 h-6" />
                     {cartCount > 0 && (
                       <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
                         {cartCount}
                       </span>
                     )}
-                  </div>
-                  <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    Cart
-                  </span>
-                </Link>
-              </div>
-
-              {/* Mobile Actions */}
-              <div className="lg:hidden flex items-center space-x-4">
-                <Link to="/wishlist" className="text-gray-600 hover:text-black relative">
-                  <Heart className="w-6 h-6" />
-                  {wishlistCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                      {wishlistCount}
-                    </span>
-                  )}
-                </Link>
-                
-                <Link to="/cart" className="text-gray-600 hover:text-black relative">
-                  <ShoppingBag className="w-6 h-6" />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                      {cartCount}
-                    </span>
-                  )}
-                </Link>
+                  </Link>
+                )}
               </div>
 
               {/* Mobile Menu Button */}
@@ -189,9 +242,23 @@ const Navbar = () => {
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}>
           <div className="h-20 flex items-center justify-between px-6 border-b border-gray-200">
-            <span className="text-lg font-bold text-black">
-              Menu
-            </span>
+            <div className="flex items-center">
+              {isAuthenticated ? (
+                <div className="flex items-center">
+                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                    <User className="w-4 h-4 text-gray-600" />
+                  </div>
+                  <div>
+                    <span className="text-sm font-bold text-black">
+                      {user?.name || 'User'}
+                    </span>
+                    <p className="text-xs text-gray-500">{user?.email}</p>
+                  </div>
+                </div>
+              ) : (
+                <span className="text-lg font-bold text-black">Menu</span>
+              )}
+            </div>
             <button
               onClick={() => setIsMenuOpen(false)}
               className="text-gray-600 hover:text-black"
@@ -225,46 +292,82 @@ const Navbar = () => {
                 Account
               </h3>
               <div className="space-y-1">
-                <Link
-                  to="/account"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
-                >
-                  <User className="w-5 h-5 mr-3" />
-                  <span>My Account</span>
-                </Link>
-                
-                <Link
-                  to="/wishlist"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center justify-between px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
-                >
-                  <div className="flex items-center">
-                    <Heart className="w-5 h-5 mr-3" />
-                    <span>Wishlist</span>
-                  </div>
-                  {wishlistCount > 0 && (
-                    <span className="bg-black text-white text-xs px-2 py-1 rounded-full">
-                      {wishlistCount}
-                    </span>
-                  )}
-                </Link>
-                
-                <Link
-                  to="/cart"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center justify-between px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
-                >
-                  <div className="flex items-center">
-                    <ShoppingBag className="w-5 h-5 mr-3" />
-                    <span>Shopping Cart</span>
-                  </div>
-                  {cartCount > 0 && (
-                    <span className="bg-black text-white text-xs px-2 py-1 rounded-full">
-                      {cartCount} items
-                    </span>
-                  )}
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <Link
+                      to="/account"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
+                    >
+                      <User className="w-5 h-5 mr-3" />
+                      <span>My Account</span>
+                    </Link>
+                    
+                    <Link
+                      to="/wishlist"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center justify-between px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
+                    >
+                      <div className="flex items-center">
+                        <Heart className="w-5 h-5 mr-3" />
+                        <span>Wishlist</span>
+                      </div>
+                      {wishlistCount > 0 && (
+                        <span className="bg-black text-white text-xs px-2 py-1 rounded-full">
+                          {wishlistCount}
+                        </span>
+                      )}
+                    </Link>
+                    
+                    <Link
+                      to="/cart"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center justify-between px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
+                    >
+                      <div className="flex items-center">
+                        <ShoppingBag className="w-5 h-5 mr-3" />
+                        <span>Shopping Cart</span>
+                      </div>
+                      {cartCount > 0 && (
+                        <span className="bg-black text-white text-xs px-2 py-1 rounded-full">
+                          {cartCount} items
+                        </span>
+                      )}
+                    </Link>
+
+                    {/* Logout Button in Mobile Menu */}
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                      className="flex items-center w-full px-4 py-3 text-red-600 hover:bg-red-50 hover:text-red-700 rounded-lg transition-colors"
+                    >
+                      <LogOut className="w-5 h-5 mr-3" />
+                      <span>Logout</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
+                    >
+                      <LogIn className="w-5 h-5 mr-3" />
+                      <span>Login</span>
+                    </Link>
+                    
+                    <Link
+                      to="/signup"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors"
+                    >
+                      <User className="w-5 h-5 mr-3" />
+                      <span>Sign Up</span>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
 

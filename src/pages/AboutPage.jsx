@@ -4,12 +4,12 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+      <div className="bg-linear-to-r from-gray-900 to-gray-800 text-white">
         <div className="max-w-7xl mx-auto px-4 py-24 md:py-32">
           <div className="max-w-3xl">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">Our Story</h1>
             <p className="text-xl text-gray-300">
-              Crafting premium headwear that blends style, comfort, and quality since 2010.
+              Crafting premium headwear that blends style, comfort, and quality since 2026.
             </p>
           </div>
         </div>
@@ -21,7 +21,7 @@ export default function AboutPage() {
           <div>
             <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
             <p className="text-gray-600 mb-6 text-lg">
-              At CapStore, we believe that a great hat is more than just an accessory - it's an expression of personality, a statement of style, and a companion for life's adventures.
+              At URBANCAP store, we believe that a great hat is more than just an accessory - it's an expression of personality, a statement of style, and a companion for life's adventures.
             </p>
             <p className="text-gray-600 mb-6">
               Founded with a passion for craftsmanship and attention to detail, we've spent over a decade perfecting our collection. Each piece in our store is carefully selected or designed to meet our high standards of quality, comfort, and style.
@@ -43,7 +43,7 @@ export default function AboutPage() {
           </div>
           <div className="rounded-xl overflow-hidden shadow-xl">
             <img 
-              src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+              src="https://www.urbanmonkey.com/cdn/shop/files/Antardrishti_green_eveil_eye_baseball_cap_03.jpg?v=1763976817" 
               alt="Our workshop" 
               className="w-full h-auto"
             />
@@ -107,22 +107,22 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[
             {
-              name: "Alex Johnson",
+              name: "Muhammed Ansil",
               role: "CEO & Founder",
               bio: "Former fashion designer with 15+ years in headwear industry",
-              img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+              img: ""
             },
             {
-              name: "Maria Garcia",
+              name: "Naheel",
               role: "Head of Design",
               bio: "Specializes in sustainable materials and innovative designs",
-              img: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+              img: ""
             },
             {
-              name: "David Chen",
+              name: "Ashfaq",
               role: "Operations Director",
               bio: "Ensures quality and efficiency in our manufacturing process",
-              img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+              img: ""
             }
           ].map((member, index) => (
             <div key={index} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
@@ -144,7 +144,7 @@ export default function AboutPage() {
       </div>
 
       {/* Customer Stories */}
-      <div className="bg-gradient-to-r from-orange-50 to-yellow-50 py-16">
+      <div className="bg-linear-to-r from-orange-50 to-yellow-50 py-16">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">What Our Customers Say</h2>

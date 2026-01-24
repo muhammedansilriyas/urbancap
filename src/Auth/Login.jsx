@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-// import Logo from "../../components/common/Logo";
 import { toast } from 'react-toastify';
 
 const Login = () => {
@@ -16,8 +15,6 @@ const Login = () => {
 
   const { login } = useAuth();
   const navigate = useNavigate();
-  
-
 
   const handleChange = (e) => {
     setFormData({
@@ -36,16 +33,16 @@ const Login = () => {
 
     if (result.success) {
       const userRole = result.user.role;
-      const userStatus=result.user.status;
-    if(userStatus!=='active'){
+      const userStatus = result.user.status;
+      if (userStatus !== 'active') {
         toast.error("Your account has been blocked. Please contact support for assistance.")
-    }else{
-      if (userRole==='admin'){
-        navigate("/admin")
-      }else{
-        navigate("/")
+      } else {
+        if (userRole === 'admin') {
+          navigate("/admin")
+        } else {
+          navigate("/")
+        }
       }
-    }
     } else {
       setError(result.error);
     }
@@ -54,21 +51,18 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <Link to="/" className="inline-block">
-            
-          </Link>
-          <h2 className="mt-6 text-3xl font-bold text-white">
+          <h2 className="mt-6 text-3xl font-bold text-gray-900">
             Sign in to your account
           </h2>
-          <p className="mt-2 text-sm text-gray-400">
+          <p className="mt-2 text-sm text-gray-600">
             Or{" "}
             <Link
               to="/signup"
-              className="font-medium text-red-500 hover:text-red-400 transition duration-300"
+              className="font-medium text-black hover:text-gray-800 transition duration-300 underline"
             >
               create a new account
             </Link>
@@ -77,11 +71,11 @@ const Login = () => {
 
         {/* Form */}
         <form
-          className="mt-8 space-y-6 bg-gray-900 p-8 rounded-lg border border-gray-800"
+          className="mt-8 space-y-6 bg-gray-50 p-8 rounded-lg border border-gray-200"
           onSubmit={handleSubmit}
         >
           {error && (
-            <div className="bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
               {error}
             </div>
           )}
@@ -90,7 +84,7 @@ const Login = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-300 mb-2"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Email address
               </label>
@@ -102,7 +96,7 @@ const Login = () => {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-3 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-white placeholder-gray-400"
+                className="w-full px-3 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-900 placeholder-gray-500"
                 placeholder="Enter your email"
               />
             </div>
@@ -110,7 +104,7 @@ const Login = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-300 mb-2"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Password
               </label>
@@ -123,7 +117,7 @@ const Login = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full px-3 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-white placeholder-gray-400 pr-10"
+                  className="w-full px-3 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-900 placeholder-gray-500 pr-10"
                   placeholder="Enter your password"
                 />
                 <button
@@ -132,9 +126,9 @@ const Login = () => {
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeSlashIcon className="h-5 w-5 text-gray-400" />
+                    <EyeSlashIcon className="h-5 w-5 text-gray-500" />
                   ) : (
-                    <EyeIcon className="h-5 w-5 text-gray-400" />
+                    <EyeIcon className="h-5 w-5 text-gray-500" />
                   )}
                 </button>
               </div>
@@ -147,23 +141,23 @@ const Login = () => {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
-                className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-600 rounded bg-gray-800"
+                className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
               />
               <label
                 htmlFor="remember-me"
-                className="ml-2 block text-sm text-gray-300"
+                className="ml-2 block text-sm text-gray-700"
               >
                 Remember me
               </label>
             </div>
 
             <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-red-500 hover:text-red-400 transition duration-300"
+              <Link
+                to="/forgot-password"
+                className="font-medium text-black hover:text-gray-800 transition duration-300 underline"
               >
                 Forgot your password?
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -171,7 +165,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -182,11 +176,11 @@ const Login = () => {
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-600">
               Don't have an account?{" "}
               <Link
                 to="/signup"
-                className="font-medium text-red-500 hover:text-red-400 transition duration-300"
+                className="font-medium text-black hover:text-gray-800 transition duration-300 underline"
               >
                 Sign up now
               </Link>

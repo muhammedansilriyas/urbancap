@@ -117,10 +117,10 @@ export const AuthProvider = ({ children }) => {
 
   const updateUser = async (userUpdates) => {
     try {
-      // Merge updates with current user state instead of replacing
+      
       const updatedUser = { 
-        ...user,  // Current user state (includes cart, wishlist, etc.)
-        ...userUpdates  // New updates (addresses)
+        ...user,  
+        ...userUpdates  
       };
 
       const response = await fetch(`${API_BASE}/users/${updatedUser.id}`, {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // Context Providers
 import { CartProvider } from './context/CartContext';
@@ -45,11 +45,20 @@ function App() {
           <AdminProvider>
             <Router>
               <Routes>
-                {/* All non-admin routes with Navbar/Footer */}
+                {/* Admin Routes (without Navbar/Footer) */}
+                <Route path="/admin" element={<AdminDashboard />}>
+                  <Route index element={<AdminHome />} />
+                  <Route path="products" element={<AdminProducts />} />
+                  <Route path="add-product" element={<AdminAddProducts />} />
+                  <Route path="orders" element={<AdminOrders />} />
+                  <Route path="users" element={<AdminUsers />} />
+                </Route>
+
+                {/* All other routes with Navbar/Footer */}
                 <Route path="/*" element={
                   <div className="min-h-screen flex flex-col bg-gray-50">
                     <Navbar />
-                    <main className="grow pt-16">
+                    <main className="flex-grow pt-16">
                       <Routes>
                         {/* Public Routes */}
                         <Route path="/" element={<HomePage />} />
@@ -75,20 +84,6 @@ function App() {
                       </Routes>
                     </main>
                     <Footer />
-                  </div>
-                } />
-                
-                {/* Admin routes without Navbar/Footer */}
-                <Route path="/admin/*" element={
-                  <div className="min-h-screen bg-gray-950">
-                    <Routes>
-                      <Route path="" element={<AdminHome />} />
-                      <Route path="dashboard" element={<AdminDashboard />} />
-                      <Route path="products" element={<AdminProducts />} />
-                      <Route path="add-product" element={<AdminAddProducts />} />
-                      <Route path="orders" element={<AdminOrders />} />
-                      <Route path="users" element={<AdminUsers />} />
-                    </Routes>
                   </div>
                 } />
               </Routes>

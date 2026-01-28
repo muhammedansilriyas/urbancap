@@ -15,11 +15,55 @@ export default function AdminProducts() {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [stockFilter, setStockFilter] = useState("");
 
+  // ✅ Debug: Log products to see their structure
+  useEffect(() => {
+    if (products && products.length > 0) {
+      console.log('Products data:', products);
+      console.log('First product stock info:', {
+        stock: products[0]?.stock,
+        inStock: products[0]?.inStock,
+        quantity: products[0]?.quantity,
+        available: products[0]?.available
+      });
+    }
+  }, [products]);
+
   const categories = useMemo(() => {
     return [
       ...new Set(products?.map((product) => product.genre).filter(Boolean)),
     ];
   }, [products]);
+
+  // ✅ Helper function to determine if product is in stock
+  const isProductInStock = (product) => {
+    // Check multiple possible stock fields
+    if (product.inStock !== undefined) {
+      return Boolean(product.inStock);
+    }
+    
+    if (product.stock !== undefined) {
+      return Number(product.stock) > 0;
+    }
+    
+    if (product.quantity !== undefined) {
+      return Number(product.quantity) > 0;
+    }
+    
+    if (product.available !== undefined) {
+      return Boolean(product.available);
+    }
+    
+    // Default to in stock if no stock info
+    return true;
+  };
+
+  // ✅ Get stock quantity
+  const getStockQuantity = (product) => {
+    if (product.stock !== undefined) return Number(product.stock);
+    if (product.quantity !== undefined) return Number(product.quantity);
+    if (product.inStock === true) return 999; // Assume large stock if inStock is true
+    return 0;
+  };
 
   const filteredProducts = useMemo(() => {
     if (!products) return [];
@@ -60,10 +104,12 @@ export default function AdminProducts() {
       filtered = filtered.filter((product) => product.genre === categoryFilter);
     }
 
-    // Stock filter
+    // Stock filter - Use our helper function
     if (stockFilter) {
       filtered = filtered.filter((product) =>
-        stockFilter === "in-stock" ? product.inStock : !product.inStock
+        stockFilter === "in-stock" 
+          ? isProductInStock(product)
+          : !isProductInStock(product)
       );
     }
 
@@ -140,6 +186,29 @@ export default function AdminProducts() {
   return (
     <div className="min-h-screen bg-gray-950 px-4 py-10">
       <div className="max-w-6xl mx-auto">
+        {/* Debug Panel - Remove after fixing */}
+        {products && products.length > 0 && (
+          <div className="mb-4 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+            <details className="cursor-pointer">
+              <summary className="text-slate-300 font-medium">Debug: Product Stock Data</summary>
+              <div className="mt-3 space-y-2 text-sm text-slate-400">
+                <div>Total products: <span className="text-slate-200">{products.length}</span></div>
+                <div>First product keys: <code className="bg-gray-900 px-2 py-1 rounded">{Object.keys(products[0]).join(', ')}</code></div>
+                <div>Stock fields found: 
+                  <div className="ml-4 mt-1">
+                    <div>• inStock: <span className="text-slate-200">{String(products[0]?.inStock)}</span></div>
+                    <div>• stock: <span className="text-slate-200">{String(products[0]?.stock)}</span></div>
+                    <div>• quantity: <span className="text-slate-200">{String(products[0]?.quantity)}</span></div>
+                    <div>• available: <span className="text-slate-200">{String(products[0]?.available)}</span></div>
+                  </div>
+                </div>
+                <div>Calculated inStock: <span className="text-slate-200">{String(isProductInStock(products[0]))}</span></div>
+                <div>Stock quantity: <span className="text-slate-200">{getStockQuantity(products[0])}</span></div>
+              </div>
+            </details>
+          </div>
+        )}
+
         <div className="flex flex-col gap-6 mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>
@@ -244,7 +313,8 @@ export default function AdminProducts() {
                 <th className="p-4 text-left">Name</th>
                 <th className="p-4 text-left">Category</th>
                 <th className="p-4 text-left">Price</th>
-                <th className="p-4 text-left">Stock</th>
+                <th className="p-4 text-left">Stock Status</th>
+                <th className="p-4 text-left">Stock Qty</th>
                 <th className="p-4 text-center">Actions</th>
               </tr>
             </thead>
@@ -252,65 +322,79 @@ export default function AdminProducts() {
             <tbody>
               {!products ? (
                 <tr>
-                  <td colSpan="6" className="text-center p-6 text-slate-400">
+                  <td colSpan="7" className="text-center p-6 text-slate-400">
                     Loading products...
                   </td>
                 </tr>
               ) : currentProducts.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="text-center p-6 text-slate-400">
+                  <td colSpan="7" className="text-center p-6 text-slate-400">
                     {isAnyFilterActive
                       ? "No products found matching your filters"
                       : "No products found."}
                   </td>
                 </tr>
               ) : (
-                currentProducts.map((p) => (
-                  <tr
-                    key={p.id}
-                    className="border-t border-gray-800 hover:bg-gray-800/50 transition-colors"
-                  >
-                    <td className="p-4">
-                      <img
-                        src={p.images?.[0] || "/placeholder-game.jpg"}
-                        alt={p.name}
-                        className="w-16 h-16 object-cover rounded-lg"
-                      />
-                    </td>
-                    <td className="p-4 font-medium">{p.name}</td>
-                    <td className="p-4 text-gray-300">{p.genre}</td>
-                    <td className="p-4 font-semibold">₹ {p.price}</td>
-                    <td className="p-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          p.inStock
-                            ? "bg-green-900/50 text-green-300 border border-green-700"
-                            : "bg-red-900/50 text-red-300 border border-red-700"
-                        }`}
-                      >
-                        {p.inStock ? "In Stock" : "Out of Stock"}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center justify-center gap-3">
-                        <button
-                          onClick={() => handleEdit(p)}
-                          className="flex items-center gap-1 px-3 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white transition duration-200"
+                currentProducts.map((p) => {
+                  const inStock = isProductInStock(p);
+                  const stockQty = getStockQuantity(p);
+                  
+                  return (
+                    <tr
+                      key={p.id}
+                      className="border-t border-gray-800 hover:bg-gray-800/50 transition-colors"
+                    >
+                      <td className="p-4">
+                        <img
+                          src={p.images?.[0] || "/placeholder-game.jpg"}
+                          alt={p.name}
+                          className="w-16 h-16 object-cover rounded-lg"
+                        />
+                      </td>
+                      <td className="p-4 font-medium">{p.name}</td>
+                      <td className="p-4 text-gray-300">{p.genre}</td>
+                      <td className="p-4 font-semibold">₹ {p.price}</td>
+                      <td className="p-4">
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            inStock
+                              ? "bg-green-900/50 text-green-300 border border-green-700"
+                              : "bg-red-900/50 text-red-300 border border-red-700"
+                          }`}
                         >
-                          <Edit3 size={16} />
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => deleteProduct(p.id)}
-                          className="flex items-center gap-1 px-3 py-2 bg-red-600 hover:bg-red-500 rounded-lg text-white transition duration-200"
-                        >
-                          <Trash2 size={16} />
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                          {inStock ? "In Stock" : "Out of Stock"}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${inStock ? 'text-blue-300 bg-blue-900/30' : 'text-gray-400 bg-gray-800/50'}`}>
+                          {stockQty > 999 ? '∞' : stockQty}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <div className="flex items-center justify-center gap-3">
+                          <button
+                            onClick={() => handleEdit(p)}
+                            className="flex items-center gap-1 px-3 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white transition duration-200"
+                          >
+                            <Edit3 size={16} />
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => {
+                              if (window.confirm(`Are you sure you want to delete "${p.name}"?`)) {
+                                deleteProduct(p.id);
+                              }
+                            }}
+                            className="flex items-center gap-1 px-3 py-2 bg-red-600 hover:bg-red-500 rounded-lg text-white transition duration-200"
+                          >
+                            <Trash2 size={16} />
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

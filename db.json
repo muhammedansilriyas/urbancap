@@ -1266,39 +1266,13 @@
   ],
   "users": [
     {
-      "id": "1",
-      "name": "Rahul Sharma",
-      "email": "rahul@example.com",
-      "cart": [
-        {
-          "productId": 1,
-          "quantity": 1,
-          "size": "M",
-          "color": "Black"
-        },
-        {
-          "productId": 3,
-          "quantity": 2,
-          "size": "L",
-          "color": "Khaki"
-        }
-      ],
-      "wishlist": [
-        2,
-        5,
-        7,
-        16,
-        21
-      ]
-    },
-    {
       "id": "cc29",
       "firstName": "ansil",
       "lastName": "ansil",
       "email": "muhammedansilriyas@gmail.com",
       "phone": "+917560968582",
       "password": "7560968582",
-      "role": "admin",
+      "role": "user",
       "status": "active",
       "wishlist": [],
       "cart": [],
@@ -1313,13 +1287,28 @@
       "email": "ansil@gmail.com",
       "phone": "7510887392",
       "password": "7510887392",
-      "role": "admin",
+      "role": "user",
       "status": "active",
       "wishlist": [],
       "cart": [],
       "purchaseHistory": [],
       "addresses": [],
       "createdAt": "2026-01-20T14:59:13.821Z"
+    },
+    {
+      "id": "ca2f",
+      "firstName": "adil",
+      "lastName": "n",
+      "email": "adil@gmail.com",
+      "phone": "+917560968582",
+      "password": "123456789",
+      "role": "admin",
+      "status": "active",
+      "wishlist": [],
+      "cart": [],
+      "purchaseHistory": [],
+      "addresses": [],
+      "createdAt": "2026-01-27T06:47:57.604Z"
     }
   ]
 }

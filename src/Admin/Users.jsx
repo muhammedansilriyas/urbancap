@@ -15,10 +15,10 @@ const getUserName = (user) => {
     'fullname',
     'username',
     'userName',
-    'firstName', // if separate first/last name fields
+    'firstName',
     'displayName',
     'nickname',
-    'email' // fallback to email if no name found
+    'email'
   ];
   
   for (const field of possibleNameFields) {
@@ -107,9 +107,19 @@ export default function AdminUsers() {
         className="bg-gray-900/80 backdrop-blur-xl border border-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-7xl mx-auto shadow-[0_0_40px_rgba(255,255,255,0.05)] overflow-hidden"
       >
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl sm:text-4xl font-[Cinzel] tracking-[0.25em] text-slate-100">
-            Manage Users
-          </h2>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl">
+              <UserCog className="w-6 h-6 text-blue-400" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-slate-100">
+                User Management
+              </h2>
+              <p className="text-sm text-slate-400 mt-1">
+                Manage user roles and status
+              </p>
+            </div>
+          </div>
           {loading && (
             <div className="flex items-center text-slate-400">
               <Loader2 className="animate-spin mr-2" size={20} />
@@ -118,17 +128,55 @@ export default function AdminUsers() {
           )}
         </div>
 
-        {/* Debug info - remove after you find the issue */}
-        {users.length > 0 && (
-          <div className="mb-4 p-3 bg-gray-800 rounded-lg text-sm">
-            <p className="text-slate-300">Debug Info: Found {users.length} users</p>
-            <p className="text-slate-400">First user keys: {Object.keys(users[0]).join(', ')}</p>
-            <p className="text-slate-400">Extracted name: "{getUserName(users[0])}"</p>
+        {/* Summary Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-700">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-slate-400">Total Users</p>
+                <p className="text-2xl font-bold text-slate-100">{users.length}</p>
+              </div>
+              <div className="p-2 bg-blue-500/20 rounded-lg">
+                <UserCog className="w-5 h-5 text-blue-400" />
+              </div>
+            </div>
           </div>
-        )}
+          
+          <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-700">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-slate-400">Admins</p>
+                <p className="text-2xl font-bold text-emerald-400">
+                  {users.filter(u => u.role === 'admin').length}
+                </p>
+              </div>
+              <div className="p-2 bg-emerald-500/20 rounded-lg">
+                <Shield className="w-5 h-5 text-emerald-400" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-700">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-slate-400">Regular Users</p>
+                <p className="text-2xl font-bold text-blue-400">
+                  {users.filter(u => u.role === 'user').length}
+                </p>
+              </div>
+              <div className="p-2 bg-blue-500/20 rounded-lg">
+                <UserCog className="w-5 h-5 text-blue-400" />
+              </div>
+            </div>
+          </div>
+        </div>
 
         {users.length === 0 ? (
-          <p className="text-center text-slate-400">No users found.</p>
+          <div className="text-center py-12 border-2 border-dashed border-gray-800 rounded-xl">
+            <UserX className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+            <p className="text-slate-400 text-lg">No users found</p>
+            <p className="text-slate-500 text-sm mt-1">Users will appear here once registered</p>
+          </div>
         ) : (
           <div className="overflow-x-auto rounded-xl border border-gray-800">
             <table className="w-full border-collapse text-sm sm:text-base">
@@ -152,14 +200,17 @@ export default function AdminUsers() {
                     className="border-b border-gray-800 hover:bg-gray-800/40 transition-all duration-200"
                   >
                     <td className="p-4 text-slate-100 font-medium">
-                      {getUserName(u)}
+                      <div className="flex items-center gap-3">
+                        <div className={`w-2 h-2 rounded-full ${u.status === 'active' ? 'bg-emerald-500' : u.status === 'blocked' ? 'bg-red-500' : 'bg-yellow-500'}`} />
+                        {getUserName(u)}
+                      </div>
                     </td>
 
                     <td className="p-4 text-slate-400">
                       {u.email || 'No Email'}
                     </td>
 
-                    <td className="p-4 text-slate-500 text-xs">
+                    <td className="p-4 text-slate-500 text-xs font-mono">
                       {u.id || u._id || 'N/A'}
                     </td>
 
@@ -171,17 +222,23 @@ export default function AdminUsers() {
                           handleStatusChange(u.id || u._id, e.target.value)
                         }
                         disabled={updatingUserId === (u.id || u._id)}
-                        className={`bg-gray-800 text-slate-200 px-3 py-2 rounded-md border border-gray-700 focus:outline-none focus:ring-1 focus:ring-slate-400 transition ${
-                          updatingUserId === (u.id || u._id) ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-600'
+                        className={`px-3 py-2 rounded-md border focus:outline-none focus:ring-1 transition ${
+                          u.status === 'active' 
+                            ? 'bg-emerald-900/30 text-emerald-300 border-emerald-700/50 focus:ring-emerald-400' 
+                            : u.status === 'blocked'
+                            ? 'bg-red-900/30 text-red-300 border-red-700/50 focus:ring-red-400'
+                            : 'bg-yellow-900/30 text-yellow-300 border-yellow-700/50 focus:ring-yellow-400'
+                        } ${
+                          updatingUserId === (u.id || u._id) ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-80'
                         }`}
                       >
-                        <option value="active">Active</option>
-                        <option value="blocked">Blocked</option>
-                        <option value="pending">Pending</option>
+                        <option value="active" className="bg-gray-800 text-slate-200">Active</option>
+                        <option value="blocked" className="bg-gray-800 text-slate-200">Blocked</option>
+                        <option value="pending" className="bg-gray-800 text-slate-200">Pending</option>
                       </select>
                     </td>
 
-                    {/* ✅ ROLE DROPDOWN */}
+                    {/* ✅ ROLE DROPDOWN - Only User and Admin options */}
                     <td className="p-4 text-center">
                       <select
                         value={u.role || "user"}
@@ -189,18 +246,21 @@ export default function AdminUsers() {
                           handleRoleChange(u.id || u._id, e.target.value)
                         }
                         disabled={updatingUserId === (u.id || u._id)}
-                        className={`bg-gray-800 text-slate-200 px-3 py-2 rounded-md border border-gray-700 focus:outline-none focus:ring-1 focus:ring-slate-400 transition ${
-                          updatingUserId === (u.id || u._id) ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-600'
+                        className={`px-3 py-2 rounded-md border focus:outline-none focus:ring-1 transition ${
+                          u.role === 'admin' 
+                            ? 'bg-purple-900/30 text-purple-300 border-purple-700/50 focus:ring-purple-400' 
+                            : 'bg-blue-900/30 text-blue-300 border-blue-700/50 focus:ring-blue-400'
+                        } ${
+                          updatingUserId === (u.id || u._id) ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-80'
                         }`}
                       >
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                        <option value="moderator">Moderator</option>
+                        <option value="user" className="bg-gray-800 text-slate-200">User</option>
+                        <option value="admin" className="bg-gray-800 text-slate-200">Admin</option>
                       </select>
                     </td>
 
                     <td className="p-4 text-center">
-                      <div className="flex items-center justify-center gap-3">
+                      <div className="flex items-center justify-center gap-2">
                         <button 
                           className={`text-red-500 hover:text-red-400 transition p-2 rounded-md hover:bg-red-500/10 ${
                             updatingUserId === (u.id || u._id) ? 'opacity-50 cursor-not-allowed' : ''
@@ -219,6 +279,30 @@ export default function AdminUsers() {
             </table>
           </div>
         )}
+
+        {/* Legend */}
+        <div className="mt-6 flex flex-wrap gap-4 text-sm text-slate-400">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+            <span>Active</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-red-500"></div>
+            <span>Blocked</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+            <span>Pending</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+            <span>Admin Role</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+            <span>User Role</span>
+          </div>
+        </div>
       </motion.div>
     </div>
   );

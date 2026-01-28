@@ -2,34 +2,108 @@ import { useEffect, useState } from "react";
 import { useAdmin } from "./Context/AdminContext";
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
-import { Plus, Trash2, X, Image, Video, GamepadIcon, Edit3, Shield } from "lucide-react";
+import { Plus, Trash2, X, Image, Edit3, Shield, Package, Palette, Ruler, Tag, Layers } from "lucide-react";
 
 export default function AdminAddProducts({ onClose, editingProduct }) {
   const { addProduct, editProduct } = useAdmin();
 
   const [formData, setFormData] = useState({
     name: "",
-    genre: "",
-    platform: "",
+    category: "",
+    brand: "",
+    color: "",
+    material: "",
+    size: "One Size",
     price: "",
-    rating: 4.0,
+    stock: "0",
     inStock: true,
-    trailer: "",
     images: [""],
     description: ""
   });
 
   const [newImage, setNewImage] = useState("");
 
+  // Categories for caps
+  const categories = [
+    "Baseball Caps",
+    "Snapbacks",
+    "Trucker Hats",
+    "Beanies",
+    "Bucket Hats",
+    "Visors",
+    "Dad Hats",
+    "Sports Caps",
+    "Fashion Caps",
+    "Limited Edition"
+  ];
+
+  // Common cap brands
+  const brands = [
+    "Nike",
+    "Adidas",
+    "New Era",
+    "Under Armour",
+    "Puma",
+    "Reebok",
+    "The North Face",
+    "Carhartt",
+    "Vans",
+    "Supreme",
+    "Custom",
+    "Other"
+  ];
+
+  // Common colors
+  const colors = [
+    "Black",
+    "White",
+    "Red",
+    "Blue",
+    "Green",
+    "Yellow",
+    "Gray",
+    "Navy",
+    "Brown",
+    "Beige",
+    "Orange",
+    "Purple",
+    "Pink",
+    "Multicolor",
+    "Camouflage"
+  ];
+
+  // Common materials
+  const materials = [
+    "Cotton",
+    "Polyester",
+    "Wool",
+    "Acrylic",
+    "Denim",
+    "Mesh",
+    "Leather",
+    "Suede",
+    "Canvas",
+    "Nylon",
+    "Blend"
+  ];
+
+  // Common sizes
+  const sizes = ["One Size", "S", "M", "L", "XL", "Adjustable"];
+
   useEffect(() => {
     if (editingProduct) {
       setFormData({
-        ...editingProduct,
+        name: editingProduct.name || "",
+        category: editingProduct.category || editingProduct.genre || "",
+        brand: editingProduct.brand || "",
+        color: editingProduct.color || "",
+        material: editingProduct.material || "",
+        size: editingProduct.size || "One Size",
         price: editingProduct.price || "",
-        rating: editingProduct.rating || 4.0,
-        inStock: editingProduct.inStock !== undefined ? editingProduct.inStock : true,
+        stock: editingProduct.stock || editingProduct.quantity || "0",
+        inStock: editingProduct.inStock !== false,
         images: editingProduct.images || [""],
-        trailer: editingProduct.trailer || ""
+        description: editingProduct.description || ""
       });
     }
   }, [editingProduct]);
@@ -38,7 +112,18 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
+      // Auto update inStock based on stock quantity
+      ...(name === 'stock' && {
+        inStock: parseInt(value) > 0
+      })
+    }));
+  };
+
+  const handleSelectChange = (name, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
     }));
   };
 
@@ -74,9 +159,12 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
     const productData = {
       ...formData,
       price: parseFloat(formData.price),
-      rating: parseFloat(formData.rating),
-      inStock: formData.inStock,
-      images: formData.images.filter(img => img.trim() !== "")
+      stock: parseInt(formData.stock),
+      inStock: parseInt(formData.stock) > 0,
+      images: formData.images.filter(img => img.trim() !== ""),
+      // Include both category and genre for compatibility
+      genre: formData.category,
+      quantity: parseInt(formData.stock)
     };
 
     if (editingProduct) {
@@ -100,15 +188,15 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
         {/* Header */}
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-700/50">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-red-500/10 rounded-xl">
-              <GamepadIcon className="w-6 h-6 text-red-400" />
+            <div className="p-2 bg-blue-500/10 rounded-xl">
+              <Package className="w-6 h-6 text-blue-400" />
             </div>
             <div>
               <h2 className="text-2xl font-bold bg-linear-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                {editingProduct ? "Edit Product" : "Add New Game"}
+                {editingProduct ? "Edit Cap" : "Add New Cap"}
               </h2>
               <p className="text-sm text-gray-400">
-                {editingProduct ? "Update game details" : "Add a new game to your store"}
+                {editingProduct ? "Update cap details" : "Add a new cap to your store"}
               </p>
             </div>
           </div>
@@ -126,12 +214,12 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
                 <div className="w-1.5 h-1.5 bg-red-500 rounded-full"></div>
-                Product Name *
+                Cap Name *
               </label>
               <input
                 type="text"
                 name="name"
-                placeholder="Elden Ring"
+                placeholder="Classic Baseball Cap"
                 value={formData.name}
                 onChange={handleChange}
                 className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-all duration-200"
@@ -141,36 +229,92 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
 
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
-                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
-                Genre *
+                <Tag className="w-4 h-4 text-blue-400" />
+                Category *
               </label>
-              <input
-                type="text"
-                name="genre"
-                placeholder="Action RPG"
-                value={formData.genre}
-                onChange={handleChange}
-                className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200"
+              <select
+                name="category"
+                value={formData.category}
+                onChange={(e) => handleSelectChange('category', e.target.value)}
+                className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 appearance-none cursor-pointer"
                 required
-              />
+              >
+                <option value="">Select Category</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
+              </select>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-                Platform *
+                <Tag className="w-4 h-4 text-green-400" />
+                Brand
               </label>
-              <input
-                type="text"
-                name="platform"
-                placeholder="PC, PlayStation, Xbox"
-                value={formData.platform}
-                onChange={handleChange}
-                className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500 transition-all duration-200"
-                required
-              />
+              <select
+                name="brand"
+                value={formData.brand}
+                onChange={(e) => handleSelectChange('brand', e.target.value)}
+                className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500 transition-all duration-200 appearance-none cursor-pointer"
+              >
+                <option value="">Select Brand</option>
+                {brands.map((brand) => (
+                  <option key={brand} value={brand}>{brand}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
+                <Palette className="w-4 h-4 text-yellow-400" />
+                Color
+              </label>
+              <select
+                name="color"
+                value={formData.color}
+                onChange={(e) => handleSelectChange('color', e.target.value)}
+                className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500 transition-all duration-200 appearance-none cursor-pointer"
+              >
+                <option value="">Select Color</option>
+                {colors.map((color) => (
+                  <option key={color} value={color}>{color}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
+                <Layers className="w-4 h-4 text-purple-400" />
+                Material
+              </label>
+              <select
+                name="material"
+                value={formData.material}
+                onChange={(e) => handleSelectChange('material', e.target.value)}
+                className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all duration-200 appearance-none cursor-pointer"
+              >
+                <option value="">Select Material</option>
+                {materials.map((material) => (
+                  <option key={material} value={material}>{material}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
+                <Ruler className="w-4 h-4 text-cyan-400" />
+                Size
+              </label>
+              <select
+                name="size"
+                value={formData.size}
+                onChange={(e) => handleSelectChange('size', e.target.value)}
+                className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all duration-200 appearance-none cursor-pointer"
+              >
+                {sizes.map((size) => (
+                  <option key={size} value={size}>{size}</option>
+                ))}
+              </select>
             </div>
 
             <div className="space-y-2">
@@ -181,7 +325,7 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
               <input
                 type="number"
                 name="price"
-                placeholder="3999"
+                placeholder="499"
                 value={formData.price}
                 onChange={handleChange}
                 className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500 transition-all duration-200"
@@ -190,68 +334,51 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
                 step="1"
               />
             </div>
-          </div>
 
-          {/* Rating & Stock Status */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
-                <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></div>
-                Rating *
+                <Package className="w-4 h-4 text-green-400" />
+                Stock Quantity *
               </label>
               <input
                 type="number"
-                name="rating"
-                placeholder="4.5"
-                value={formData.rating}
+                name="stock"
+                placeholder="100"
+                value={formData.stock}
                 onChange={handleChange}
-                className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-200"
+                className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500 transition-all duration-200"
                 required
                 min="0"
-                max="5"
-                step="0.1"
+                step="1"
               />
-            </div>
-
-            <div className="flex items-end">
-              <label className="flex items-center gap-3 p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 w-full cursor-pointer hover:bg-gray-700/50 transition-all duration-200">
-                <div className="relative">
-                  <input
-                    type="checkbox"
-                    name="inStock"
-                    checked={formData.inStock}
-                    onChange={handleChange}
-                    className="sr-only"
-                  />
-                  <div className={`w-12 h-6 rounded-full transition-all duration-300 ${formData.inStock ? 'bg-green-500' : 'bg-gray-600'}`}>
-                    <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all duration-300 ${formData.inStock ? 'left-7' : 'left-1'}`}></div>
-                  </div>
-                </div>
-                <span className="text-gray-300 font-medium">In Stock</span>
-                {formData.inStock ? (
-                  <Shield className="w-4 h-4 text-green-400" />
-                ) : (
-                  <Shield className="w-4 h-4 text-gray-400" />
-                )}
-              </label>
             </div>
           </div>
 
-          {/* Trailer URL */}
-          <div className="space-y-2">
-            <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
-              <Video className="w-4 h-4 text-red-400" />
-              YouTube Trailer URL *
+          {/* Stock Status */}
+          <div className="flex items-center p-3.5 rounded-xl bg-gray-800/50 border border-gray-700">
+            <label className="flex items-center gap-3 w-full cursor-pointer">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  name="inStock"
+                  checked={formData.inStock}
+                  onChange={handleChange}
+                  className="sr-only"
+                />
+                <div className={`w-12 h-6 rounded-full transition-all duration-300 ${formData.inStock ? 'bg-green-500' : 'bg-gray-600'}`}>
+                  <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all duration-300 ${formData.inStock ? 'left-7' : 'left-1'}`}></div>
+                </div>
+              </div>
+              <span className="text-gray-300 font-medium">In Stock</span>
+              {formData.inStock ? (
+                <Shield className="w-4 h-4 text-green-400" />
+              ) : (
+                <Shield className="w-4 h-4 text-gray-400" />
+              )}
+              <span className="ml-auto text-sm text-gray-400">
+                {formData.inStock ? `(${formData.stock} units available)` : "(Out of stock)"}
+              </span>
             </label>
-            <input
-              type="url"
-              name="trailer"
-              placeholder="https://www.youtube.com/embed/VIDEO_ID"
-              value={formData.trailer}
-              onChange={handleChange}
-              className="w-full p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-all duration-200"
-              required
-            />
           </div>
 
           {/* Description */}
@@ -262,7 +389,7 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
             </label>
             <textarea
               name="description"
-              placeholder="Enter detailed game description..."
+              placeholder="Describe the cap features, material quality, style, and specifications..."
               value={formData.description}
               onChange={handleChange}
               rows="4"
@@ -275,7 +402,7 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
           <div className="space-y-3">
             <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
               <Image className="w-4 h-4 text-yellow-400" />
-              Product Images *
+              Cap Images *
             </label>
             
             {/* Existing Images */}
@@ -283,7 +410,7 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
               <div key={index} className="flex items-center gap-3">
                 <input
                   type="url"
-                  placeholder="https://example.com/image.jpg"
+                  placeholder="https://example.com/cap-image.jpg"
                   value={image}
                   onChange={(e) => handleImageChange(index, e.target.value)}
                   className="flex-1 p-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500 transition-all duration-200"
@@ -341,10 +468,10 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {formData.images.filter(img => img.trim() !== "").map((image, index) => (
-                  <div key={index} className="relative group group">
+                  <div key={index} className="relative group">
                     <img
                       src={image}
-                      alt={`Preview ${index + 1}`}
+                      alt={`Cap preview ${index + 1}`}
                       className="w-full h-20 object-cover rounded-xl border-2 border-gray-700 group-hover:border-yellow-500 transition-all duration-200"
                       onError={(e) => {
                         e.target.src = 'https://via.placeholder.com/150?text=Image+Error';
@@ -377,24 +504,6 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
             </div>
           )}
 
-          {/* Trailer Preview */}
-          {formData.trailer && (
-            <div className="space-y-3">
-              <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
-                <Video className="w-4 h-4 text-red-400" />
-                Trailer Preview
-              </label>
-              <div className="aspect-video bg-gray-800/50 rounded-xl border border-gray-700 overflow-hidden shadow-lg">
-                <iframe
-                  src={formData.trailer}
-                  title="Trailer Preview"
-                  className="w-full h-full"
-                  allowFullScreen
-                />
-              </div>
-            </div>
-          )}
-
           {/* Buttons */}
           <div className="flex justify-end gap-3 pt-6 border-t border-gray-700/50">
             <button
@@ -407,17 +516,17 @@ export default function AdminAddProducts({ onClose, editingProduct }) {
             </button>
             <button
               type="submit"
-              className="px-6 py-3 bg-linear-to- from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 font-medium shadow-lg shadow-red-500/25 flex items-center gap-2"
+              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 font-medium shadow-lg shadow-blue-500/25 flex items-center gap-2"
             >
               {editingProduct ? (
                 <>
                   <Edit3 className="w-4 h-4" />
-                  Update Game
+                  Update Cap
                 </>
               ) : (
                 <>
                   <Plus className="w-4 h-4" />
-                  Add Game
+                  Add Cap
                 </>
               )}
             </button>

@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useAdmin } from "./Context/AdminContext";
-import { Edit3, Plus, Trash2, X, Filter } from "lucide-react";
+import { Edit3, Plus, Trash2, X } from "lucide-react";
 import AdminAddProducts from "./AdminAddProdect";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import SearchBar from "./Components/SearchBar";
@@ -15,28 +15,16 @@ export default function AdminProducts() {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [stockFilter, setStockFilter] = useState("");
 
-  // ✅ Debug: Log products to see their structure
-  useEffect(() => {
-    if (products && products.length > 0) {
-      console.log('Products data:', products);
-      console.log('First product stock info:', {
-        stock: products[0]?.stock,
-        inStock: products[0]?.inStock,
-        quantity: products[0]?.quantity,
-        available: products[0]?.available
-      });
-    }
-  }, [products]);
-
+  // Get categories from products
   const categories = useMemo(() => {
     return [
-      ...new Set(products?.map((product) => product.genre).filter(Boolean)),
+      ...new Set(products?.map((product) => product.category || product.genre).filter(Boolean)),
     ];
   }, [products]);
 
-  // ✅ Helper function to determine if product is in stock
+  // ✅ Helper function to determine if cap is in stock
   const isProductInStock = (product) => {
-    // Check multiple possible stock fields
+    // Check multiple possible stock fields for caps
     if (product.inStock !== undefined) {
       return Boolean(product.inStock);
     }
@@ -77,7 +65,9 @@ export default function AdminProducts() {
       filtered = filtered.filter(
         (product) =>
           product.name?.toLowerCase().includes(term) ||
-          product.genre?.toLowerCase().includes(term) ||
+          product.category?.toLowerCase().includes(term) ||
+          product.brand?.toLowerCase().includes(term) ||
+          product.color?.toLowerCase().includes(term) ||
           product.price?.toString().includes(term)
       );
 
@@ -85,13 +75,15 @@ export default function AdminProducts() {
       filtered.sort((a, b) => {
         const aStarts =
           a.name?.toLowerCase().startsWith(term) ||
-          a.genre?.toLowerCase().startsWith(term) ||
+          a.category?.toLowerCase().startsWith(term) ||
+          a.brand?.toLowerCase().startsWith(term) ||
           a.price?.toString().startsWith(term)
             ? 0
             : 1;
         const bStarts =
           b.name?.toLowerCase().startsWith(term) ||
-          b.genre?.toLowerCase().startsWith(term) ||
+          b.category?.toLowerCase().startsWith(term) ||
+          b.brand?.toLowerCase().startsWith(term) ||
           b.price?.toString().startsWith(term)
             ? 0
             : 1;
@@ -101,10 +93,12 @@ export default function AdminProducts() {
 
     // Category filter
     if (categoryFilter) {
-      filtered = filtered.filter((product) => product.genre === categoryFilter);
+      filtered = filtered.filter(
+        (product) => (product.category || product.genre) === categoryFilter
+      );
     }
 
-    // Stock filter - Use our helper function
+    // Stock filter
     if (stockFilter) {
       filtered = filtered.filter((product) =>
         stockFilter === "in-stock" 
@@ -186,44 +180,21 @@ export default function AdminProducts() {
   return (
     <div className="min-h-screen bg-gray-950 px-4 py-10">
       <div className="max-w-6xl mx-auto">
-        {/* Debug Panel - Remove after fixing */}
-        {products && products.length > 0 && (
-          <div className="mb-4 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
-            <details className="cursor-pointer">
-              <summary className="text-slate-300 font-medium">Debug: Product Stock Data</summary>
-              <div className="mt-3 space-y-2 text-sm text-slate-400">
-                <div>Total products: <span className="text-slate-200">{products.length}</span></div>
-                <div>First product keys: <code className="bg-gray-900 px-2 py-1 rounded">{Object.keys(products[0]).join(', ')}</code></div>
-                <div>Stock fields found: 
-                  <div className="ml-4 mt-1">
-                    <div>• inStock: <span className="text-slate-200">{String(products[0]?.inStock)}</span></div>
-                    <div>• stock: <span className="text-slate-200">{String(products[0]?.stock)}</span></div>
-                    <div>• quantity: <span className="text-slate-200">{String(products[0]?.quantity)}</span></div>
-                    <div>• available: <span className="text-slate-200">{String(products[0]?.available)}</span></div>
-                  </div>
-                </div>
-                <div>Calculated inStock: <span className="text-slate-200">{String(isProductInStock(products[0]))}</span></div>
-                <div>Stock quantity: <span className="text-slate-200">{getStockQuantity(products[0])}</span></div>
-              </div>
-            </details>
-          </div>
-        )}
-
         <div className="flex flex-col gap-6 mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>
               <h1 className="text-3xl font-semibold text-white">
-                Manage Products
+                Manage Caps
               </h1>
               <p className="text-gray-400 mt-1">
                 {isAnyFilterActive ? (
                   <>
-                    Showing {filteredProducts.length} of {products?.length || 0} filtered products
+                    Showing {filteredProducts.length} of {products?.length || 0} filtered caps
                   </>
                 ) : (
                   <>
                     Showing {indexOfFirstItem + 1}-
-                    {Math.min(indexOfLastItem, filteredProducts.length)} of {filteredProducts.length} products
+                    {Math.min(indexOfLastItem, filteredProducts.length)} of {filteredProducts.length} caps
                   </>
                 )}
               </p>
@@ -244,7 +215,7 @@ export default function AdminProducts() {
                 onClick={handleAdd}
                 className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-500 rounded-lg text-white transition duration-300 transform hover:scale-105"
               >
-                <Plus size={18} /> Add Product
+                <Plus size={18} /> Add Cap
               </button>
             </div>
           </div>
@@ -253,7 +224,7 @@ export default function AdminProducts() {
           <div className="flex flex-col sm:flex-row gap-4 items-start">
             <SearchBar
               className="px-3 py-3"
-              placeholder="Search products by name, category, or price..."
+              placeholder="Search caps by name, brand, color, or price..."
               onSearch={(value) => setSearchTerm(value)}
             />
 
@@ -312,6 +283,8 @@ export default function AdminProducts() {
                 <th className="p-4 text-left">Image</th>
                 <th className="p-4 text-left">Name</th>
                 <th className="p-4 text-left">Category</th>
+                <th className="p-4 text-left">Brand</th>
+                <th className="p-4 text-left">Color</th>
                 <th className="p-4 text-left">Price</th>
                 <th className="p-4 text-left">Stock Status</th>
                 <th className="p-4 text-left">Stock Qty</th>
@@ -322,16 +295,16 @@ export default function AdminProducts() {
             <tbody>
               {!products ? (
                 <tr>
-                  <td colSpan="7" className="text-center p-6 text-slate-400">
-                    Loading products...
+                  <td colSpan="9" className="text-center p-6 text-slate-400">
+                    Loading caps...
                   </td>
                 </tr>
               ) : currentProducts.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="text-center p-6 text-slate-400">
+                  <td colSpan="9" className="text-center p-6 text-slate-400">
                     {isAnyFilterActive
-                      ? "No products found matching your filters"
-                      : "No products found."}
+                      ? "No caps found matching your filters"
+                      : "No caps found."}
                   </td>
                 </tr>
               ) : (
@@ -346,13 +319,15 @@ export default function AdminProducts() {
                     >
                       <td className="p-4">
                         <img
-                          src={p.images?.[0] || "/placeholder-game.jpg"}
+                          src={p.images?.[0] || p.image || "/placeholder-cap.jpg"}
                           alt={p.name}
                           className="w-16 h-16 object-cover rounded-lg"
                         />
                       </td>
                       <td className="p-4 font-medium">{p.name}</td>
-                      <td className="p-4 text-gray-300">{p.genre}</td>
+                      <td className="p-4 text-gray-300">{p.category || p.genre}</td>
+                      <td className="p-4 text-gray-300">{p.brand || "-"}</td>
+                      <td className="p-4 text-gray-300">{p.color || "-"}</td>
                       <td className="p-4 font-semibold">₹ {p.price}</td>
                       <td className="p-4">
                         <span

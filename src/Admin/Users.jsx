@@ -89,6 +89,13 @@ export default function AdminUsers() {
     }
   };
 
+  // Calculate statistics
+  const totalUsers = users.length;
+  const activeUsers = users.filter(u => u.status === 'active').length;
+  const blockedUsers = users.filter(u => u.status === 'blocked').length;
+  const adminUsers = users.filter(u => u.role === 'admin').length;
+  const regularUsers = users.filter(u => u.role === 'user').length;
+
   // Check if users data is loaded correctly
   if (!users) {
     return (
@@ -116,7 +123,7 @@ export default function AdminUsers() {
                 User Management
               </h2>
               <p className="text-sm text-slate-400 mt-1">
-                Manage user roles and status
+                Manage user roles and account status
               </p>
             </div>
           </div>
@@ -129,12 +136,12 @@ export default function AdminUsers() {
         </div>
 
         {/* Summary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-700">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-400">Total Users</p>
-                <p className="text-2xl font-bold text-slate-100">{users.length}</p>
+                <p className="text-2xl font-bold text-slate-100">{totalUsers}</p>
               </div>
               <div className="p-2 bg-blue-500/20 rounded-lg">
                 <UserCog className="w-5 h-5 text-blue-400" />
@@ -142,30 +149,42 @@ export default function AdminUsers() {
             </div>
           </div>
           
+          <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-700">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-slate-400">Active Users</p>
+                <p className="text-2xl font-bold text-emerald-400">{activeUsers}</p>
+              </div>
+              <div className="p-2 bg-emerald-500/20 rounded-lg">
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <div className="w-3 h-3 bg-emerald-400 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-700">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-slate-400">Blocked Users</p>
+                <p className="text-2xl font-bold text-red-400">{blockedUsers}</p>
+              </div>
+              <div className="p-2 bg-red-500/20 rounded-lg">
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-700">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-400">Admins</p>
-                <p className="text-2xl font-bold text-emerald-400">
-                  {users.filter(u => u.role === 'admin').length}
-                </p>
+                <p className="text-2xl font-bold text-purple-400">{adminUsers}</p>
               </div>
-              <div className="p-2 bg-emerald-500/20 rounded-lg">
-                <Shield className="w-5 h-5 text-emerald-400" />
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-400">Regular Users</p>
-                <p className="text-2xl font-bold text-blue-400">
-                  {users.filter(u => u.role === 'user').length}
-                </p>
-              </div>
-              <div className="p-2 bg-blue-500/20 rounded-lg">
-                <UserCog className="w-5 h-5 text-blue-400" />
+              <div className="p-2 bg-purple-500/20 rounded-lg">
+                <Shield className="w-5 h-5 text-purple-400" />
               </div>
             </div>
           </div>
@@ -201,7 +220,7 @@ export default function AdminUsers() {
                   >
                     <td className="p-4 text-slate-100 font-medium">
                       <div className="flex items-center gap-3">
-                        <div className={`w-2 h-2 rounded-full ${u.status === 'active' ? 'bg-emerald-500' : u.status === 'blocked' ? 'bg-red-500' : 'bg-yellow-500'}`} />
+                        <div className={`w-2 h-2 rounded-full ${u.status === 'active' ? 'bg-emerald-500' : 'bg-red-500'}`} />
                         {getUserName(u)}
                       </div>
                     </td>
@@ -214,7 +233,7 @@ export default function AdminUsers() {
                       {u.id || u._id || 'N/A'}
                     </td>
 
-                    {/* ✅ STATUS DROPDOWN */}
+                    {/* ✅ STATUS DROPDOWN - Only Active and Blocked options */}
                     <td className="p-4 text-center">
                       <select
                         value={u.status || "active"}
@@ -225,16 +244,13 @@ export default function AdminUsers() {
                         className={`px-3 py-2 rounded-md border focus:outline-none focus:ring-1 transition ${
                           u.status === 'active' 
                             ? 'bg-emerald-900/30 text-emerald-300 border-emerald-700/50 focus:ring-emerald-400' 
-                            : u.status === 'blocked'
-                            ? 'bg-red-900/30 text-red-300 border-red-700/50 focus:ring-red-400'
-                            : 'bg-yellow-900/30 text-yellow-300 border-yellow-700/50 focus:ring-yellow-400'
+                            : 'bg-red-900/30 text-red-300 border-red-700/50 focus:ring-red-400'
                         } ${
                           updatingUserId === (u.id || u._id) ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-80'
                         }`}
                       >
                         <option value="active" className="bg-gray-800 text-slate-200">Active</option>
                         <option value="blocked" className="bg-gray-800 text-slate-200">Blocked</option>
-                        <option value="pending" className="bg-gray-800 text-slate-200">Pending</option>
                       </select>
                     </td>
 
@@ -284,15 +300,11 @@ export default function AdminUsers() {
         <div className="mt-6 flex flex-wrap gap-4 text-sm text-slate-400">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-            <span>Active</span>
+            <span>Active Status</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-red-500"></div>
-            <span>Blocked</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-            <span>Pending</span>
+            <span>Blocked Status</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-purple-500"></div>
@@ -301,6 +313,22 @@ export default function AdminUsers() {
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-blue-500"></div>
             <span>User Role</span>
+          </div>
+        </div>
+
+        {/* Info Box */}
+        <div className="mt-6 p-4 bg-blue-900/20 border border-blue-800/50 rounded-xl">
+          <div className="flex items-start gap-3">
+            <Shield className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-blue-300 font-medium mb-1">User Management Guide</p>
+              <ul className="text-sm text-slate-400 space-y-1">
+                <li>• <span className="text-emerald-400">Active</span> users can login and use the platform normally</li>
+                <li>• <span className="text-red-400">Blocked</span> users cannot login or access any features</li>
+                <li>• <span className="text-purple-400">Admins</span> have full access to all admin features</li>
+                <li>• <span className="text-blue-400">Users</span> have regular customer access only</li>
+              </ul>
+            </div>
           </div>
         </div>
       </motion.div>
